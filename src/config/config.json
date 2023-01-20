@@ -1,0 +1,77 @@
+{
+  "category": ["Arknight", "Fate Grand Order", "Girl Frontline"],
+  "product": [
+    {
+      "name": "saber",
+      "price": 12,
+      "inventory": 3,
+      "category": "Fate Grand Order",
+      "img": "saber.jpg",
+      "description": "saber"
+    },
+    {
+      "name": "caster",
+      "price": 15,
+      "inventory": 5,
+      "category": "Fate Grand Order",
+      "img": "caster.jpg",
+      "description": "caster"
+    },
+    {
+      "name": "foreigner",
+      "price": 20,
+      "inventory": 4,
+      "category": "Fate Grand Order",
+      "img": "foreigner.jpg",
+      "description": "foreigner"
+    },
+    {
+      "name": "iws2000",
+      "price": 20,
+      "inventory": 0,
+      "category": "Girl Frontline",
+      "img": "iws2000.jpg",
+      "description": "iws2000"
+    },
+    {
+      "name": "kar98k",
+      "price": 14,
+      "inventory": 4,
+      "category": "Girl Frontline",
+      "img": "kar98k.jpg",
+      "description": "kar98k"
+    },
+    {
+      "name": "wa2000",
+      "price": 20,
+      "inventory": 2,
+      "category": "Girl Frontline",
+      "img": "wa2000.jpg",
+      "description": "wa2000"
+    },
+    {
+      "name": "bagpipe",
+      "price": 20,
+      "inventory": 2,
+      "category": "Arknight",
+      "img": "bagpipe.jpg",
+      "description": "bagpipe"
+    },
+    {
+      "name": "skadi",
+      "price": 13,
+      "inventory": 5,
+      "category": "Arknight",
+      "img": "skadi.jpg",
+      "description": "skadi"
+    },
+    {
+      "name": "mudrock",
+      "price": 21,
+      "inventory": 4,
+      "category": "Arknight",
+      "img": "mudrock.jpg",
+      "description": "mudrock"
+    }
+  ]
+}

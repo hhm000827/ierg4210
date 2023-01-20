@@ -1,19 +1,24 @@
 import { Toaster } from "react-hot-toast";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import logo from "./logo.svg";
+import Category from "./page/Category";
+import Home from "./page/Home";
+import Layout from "./page/Layout";
+import NoPage from "./page/NoPage";
+import Product from "./page/Product";
+
 function App() {
   return (
     <div className="App">
-      <div>
-        <Toaster />
-      </div>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h1 class="text-3xl font-bold underline">Hello world!</h1>
-        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
-      </header>
+      <Toaster />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path=":category" element={<Category />} />
+          <Route path=":category/:product" element={<Product />} />
+          <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
     </div>
   );
 }
