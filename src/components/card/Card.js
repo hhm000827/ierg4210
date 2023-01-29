@@ -1,6 +1,5 @@
 import array from "lodash/array";
 import lang from "lodash/lang";
-import string from "lodash/string";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -8,7 +7,7 @@ import { addToCart } from "../shoppingCart/ShoppingCartSlice";
 
 const importAll = (r) => {
   let images = {};
-  r.keys().forEach((item, index) => {
+  r.keys().forEach((item) => {
     images[item.replace("./", "")] = r(item);
   });
   return images;
@@ -40,14 +39,14 @@ const Card = (props) => {
 
   return (
     <div className="card w-auto bg-gray-800 shadow-xl text-white">
-      <Link to={`/${string.snakeCase(props.product.category)}/${string.snakeCase(props.product.name)}`}>
+      <Link to={`/Search?pid=${props.product.pid}`}>
         <figure className="mt-4">
           <img className="w-36 h-36 mask rounded" src={images[props.product.img]} alt={props.product.name} />
         </figure>
       </Link>
       <div className="card-body">
         <div className="flex flex-row justify-center gap-2 card-title">
-          <Link to={`/${string.snakeCase(props.product.category)}/${string.snakeCase(props.product.name)}`}>
+          <Link to={`/Search?pid=${props.product.pid}`}>
             <h2>{props.product.name}</h2>
           </Link>
           {props.product.inventory <= 3 && <div className="badge badge-sm badge-secondary">{props.product.inventory}</div>}

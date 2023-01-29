@@ -1,16 +1,27 @@
 import lang from "lodash/lang";
-import string from "lodash/string";
 import { memo } from "react";
-import { useParams } from "react-router-dom";
-import { ProductDetailCard } from "../components/card/Card";
+import { useSearchParams } from "react-router-dom";
+import { Card, ProductDetailCard } from "../components/card/Card";
 import config from "../config/config.json";
 
 const Product = () => {
-  let { product } = useParams();
+  const [searchParams] = useSearchParams();
+  const selectedProduct = lang.isNil(searchParams.get("pid"))
+    ? config.product.filter((item) => lang.isEqual(item.cid, Number(searchParams.get("cid"))))
+    : config.product.find((item) => lang.isEqual(item.pid, Number(searchParams.get("pid"))));
 
-  const selectedProduct = config.product.find((item) => lang.isEqual(string.startCase(item.name), string.startCase(product)));
-
-  return <div>{selectedProduct && <ProductDetailCard product={selectedProduct} />}</div>;
+  return lang.isNil(searchParams.get("pid")) ? (
+    <div className="grid h-auto gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {!lang.isEmpty(selectedProduct) &&
+        selectedProduct.map((product) => (
+          <div key={`$search-${product.name}`}>
+            <Card product={product} />
+          </div>
+        ))}
+    </div>
+  ) : (
+    <div>{selectedProduct && <ProductDetailCard product={selectedProduct} />}</div>
+  );
 };
 
 export default memo(Product);
