@@ -21,12 +21,13 @@ const Card = (props) => {
 
   const clickButton = (product) => {
     //use index to check if exists in cart when cart is not empty
-    if (array.findIndex(shoppingCart, (o) => lang.isEqual(o.payload.name, product.name)) !== -1 && !lang.isEmpty(shoppingCart)) {
+    if (array.findIndex(shoppingCart, (o) => lang.isEqual(o.payload.pid, product.pid)) !== -1 && !lang.isEmpty(shoppingCart)) {
       toast.error("Product is existed in shopping cart");
       return;
     }
 
     let payload = {
+      pid: product.pid,
       name: product.name,
       price: product.price,
       quantity: 1,
@@ -70,12 +71,13 @@ const ProductDetailCard = (props) => {
 
   const clickButton = (product) => {
     //use index to check if exists in cart when cart is not empty
-    if (array.findIndex(shoppingCart, (o) => lang.isEqual(o.payload.name, product.name)) !== -1 && !lang.isEmpty(shoppingCart)) {
+    if (array.findIndex(shoppingCart, (o) => lang.isEqual(o.payload.pid, product.pid)) !== -1 && !lang.isEmpty(shoppingCart)) {
       toast.error("Product is existed in shopping cart");
       return;
     }
 
     let payload = {
+      pid: product.pid,
       name: product.name,
       price: product.price,
       quantity: 1,
