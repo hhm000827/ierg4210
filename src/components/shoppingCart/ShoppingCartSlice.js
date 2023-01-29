@@ -14,7 +14,7 @@ export const shoppingCartSlice = createSlice({
       array.pull(state.value, payload);
     },
     changeQuantity: (state, payload) => {
-      let index = array.findIndex(state.value, (item) => lang.isEqual(item.payload.name, payload.payload.name));
+      let index = array.findIndex(state.value, (item) => lang.isEqual(item.payload.pid, payload.payload.pid));
       state.value.splice(index, 1, payload);
       array.remove(state.value, (item) => lang.lte(item.payload.quantity, 0));
     },

@@ -18,6 +18,7 @@ const Table = (props) => {
 
   const handleChangeQuantity = (input) => {
     let payload = {
+      pid: input.pid,
       name: input.name,
       price: input.price,
       quantity: Number(ref.current[input.name].value),
@@ -43,7 +44,7 @@ const Table = (props) => {
           <tbody>
             {shoppingCart.map((item) => {
               return (
-                <tr key={item.payload.name}>
+                <tr key={item.payload.pid}>
                   <td>{item.payload.name}</td>
                   <td>
                     <input
