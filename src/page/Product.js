@@ -1,18 +1,30 @@
+import axios from "axios";
 import lang from "lodash/lang";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Card, ProductDetailCard } from "../components/card/Card";
-import config from "../config/config.json";
 
 const Product = () => {
   const [searchParams] = useSearchParams();
-  const selectedProduct = lang.isNil(searchParams.get("pid"))
-    ? config.product.filter((item) => lang.isEqual(item.cid, Number(searchParams.get("cid"))))
-    : config.product.find((item) => lang.isEqual(item.pid, Number(searchParams.get("pid"))));
+  const [selectedProduct, setSelectedProduct] = useState();
+
+  useEffect(() => {
+    //determine which card tyoe should use base on the existence of pid
+    lang.isNil(searchParams.get("pid"))
+      ? axios
+          .get(`http://localhost:8000/api/getFilteredProducts?cid=${Number(searchParams.get("cid"))}`)
+          .then((res) => setSelectedProduct(res.data))
+          .catch((e) => console.error(e))
+      : axios
+          .get(`http://localhost:8000/api/getFilteredProducts?pid=${Number(searchParams.get("pid"))}`)
+          .then((res) => setSelectedProduct(res.data))
+          .catch((e) => console.error(e));
+  }, [searchParams]);
 
   return lang.isNil(searchParams.get("pid")) ? (
     <div className="grid h-auto gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {!lang.isEmpty(selectedProduct) &&
+        lang.isArray(selectedProduct) &&
         selectedProduct.map((product) => (
           <div key={`$search-${product.name}`}>
             <Card product={product} />
@@ -20,7 +32,7 @@ const Product = () => {
         ))}
     </div>
   ) : (
-    <div>{selectedProduct && <ProductDetailCard product={selectedProduct} />}</div>
+    <div>{selectedProduct && lang.isObject(selectedProduct) && <ProductDetailCard product={selectedProduct} />}</div>
   );
 };
 

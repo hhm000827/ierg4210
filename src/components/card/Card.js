@@ -1,21 +1,12 @@
 import array from "lodash/array";
 import lang from "lodash/lang";
+import React from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { addToCart } from "../shoppingCart/ShoppingCartSlice";
 
-const importAll = (r) => {
-  let images = {};
-  r.keys().forEach((item) => {
-    images[item.replace("./", "")] = r(item);
-  });
-  return images;
-};
-
-const images = importAll(require.context("../../../public/image", false, /\.(png|jpe?g|svg)$/));
-
-const Card = (props) => {
+const Card = React.memo((props) => {
   const shoppingCart = useSelector((state) => state.shoppingCart.value);
   const dispatch = useDispatch();
 
@@ -42,7 +33,7 @@ const Card = (props) => {
     <div className="card w-auto bg-gray-800 shadow-xl text-white">
       <Link to={`/Search?pid=${props.product.pid}`}>
         <figure className="mt-4">
-          <img className="w-36 h-36 mask rounded" src={images[props.product.img]} alt={props.product.name} />
+          <img className="w-36 h-36 mask rounded" src={`http://localhost:8000/images/${props.product.img}`} alt={props.product.name} />
         </figure>
       </Link>
       <div className="card-body">
@@ -63,9 +54,9 @@ const Card = (props) => {
       </div>
     </div>
   );
-};
+});
 
-const ProductDetailCard = (props) => {
+const ProductDetailCard = React.memo((props) => {
   const shoppingCart = useSelector((state) => state.shoppingCart.value);
   const dispatch = useDispatch();
 
@@ -91,7 +82,7 @@ const ProductDetailCard = (props) => {
   return (
     <div className="card lg:card-side lg:w-full bg-gray-800 shadow-xl text-white">
       <figure>
-        <img src={images[props.product.img]} alt={props.product.name} />
+        <img src={`http://localhost:8000/images/${props.product.img}`} alt={props.product.name} />
       </figure>
       <div className="card-body lg:w-full">
         <h2 className="card-title justify-center">{props.product.name}</h2>
@@ -115,6 +106,6 @@ const ProductDetailCard = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export { Card, ProductDetailCard };

@@ -1,10 +1,17 @@
+import axios from "axios";
 import lang from "lodash/lang";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import { Card } from "../components/card/Card";
-import config from "../config/config.json";
 
 const Home = () => {
-  const products = config.product;
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/api/getAllProduct")
+      .then((res) => setProducts(res.data))
+      .catch((e) => console.error(e));
+  }, []);
 
   return (
     <div className="grid h-auto gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
