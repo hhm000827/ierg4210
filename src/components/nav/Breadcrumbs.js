@@ -10,11 +10,11 @@ const Breadcrumbs = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/getAllCategory")
+      .get("http://13.112.244.194:8000/api/getAllCategory")
       .then((res) => setCategory(res.data.find((item) => lang.isEqual(Number(searchParams.get("cid")), item.cid))))
       .catch((e) => console.error(e));
     axios
-      .get(`http://localhost:8000/api/getFilteredProducts?pid=${Number(searchParams.get("pid"))}`)
+      .get(`http://13.112.244.194:8000/api/getFilteredProducts?pid=${Number(searchParams.get("pid"))}`)
       .then((res) => setProduct(res.data))
       .catch((e) => console.error(e));
   }, [searchParams]);
