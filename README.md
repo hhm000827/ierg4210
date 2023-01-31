@@ -1,24 +1,30 @@
-# Background
+# Background of Frontend
 
-## Frontend
-
-### React
+## React
 
 All code include tag are written in js file instead of html file.
 
-### UI design
+## UI design
 
 Tailwind CSS and DaisyUI. All style must be written in className.
 
-### State Management
+## State Management
 
 React Redux
 
-### Routing
+## Routing
 
 React-router-dom
 
-## Backend
+## Environment Management
+
+In order to use different API for different environment(development, production), I have set up 2 .env file:
+`.env.development`
+`.env.production`
+
+### Format:
+
+React_App_API= TYPE_YOUR_API_URL_HERE
 
 ## How to Run the project in phase 1
 
