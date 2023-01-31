@@ -32,8 +32,8 @@ const Table = (props) => {
   return !lang.isEmpty(shoppingCart) ? (
     <div className="flex flex-col">
       <div className="overflow-x-auto">
-        <p>Shopping List (Total: ${props.total})</p>
-        <table className="table w-full">
+        <p className="text-white">Shopping List (Total: ${props.total})</p>
+        <table className="table w-full text-white">
           <thead>
             <tr>
               <th>Product</th>
