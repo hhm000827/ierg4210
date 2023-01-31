@@ -8,7 +8,7 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("http://13.112.244.194:8000/api/getAllProduct")
+      .get(`${process.env.React_App_API}/api/getAllProduct`)
       .then((res) => setProducts(res.data))
       .catch((e) => console.error(e));
   }, []);

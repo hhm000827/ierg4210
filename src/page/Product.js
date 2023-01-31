@@ -12,11 +12,11 @@ const Product = () => {
     //determine which card tyoe should use base on the existence of pid
     lang.isNil(searchParams.get("pid"))
       ? axios
-          .get(`http://13.112.244.194:8000/api/getFilteredProducts?cid=${Number(searchParams.get("cid"))}`)
+          .get(`${process.env.React_App_API}/api/getFilteredProducts?cid=${Number(searchParams.get("cid"))}`)
           .then((res) => setSelectedProduct(res.data))
           .catch((e) => console.error(e))
       : axios
-          .get(`http://13.112.244.194:8000/api/getFilteredProducts?pid=${Number(searchParams.get("pid"))}`)
+          .get(`${process.env.React_App_API}/api/getFilteredProducts?pid=${Number(searchParams.get("pid"))}`)
           .then((res) => setSelectedProduct(res.data))
           .catch((e) => console.error(e));
   }, [searchParams]);

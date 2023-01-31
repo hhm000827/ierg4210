@@ -33,7 +33,7 @@ const Card = React.memo((props) => {
     <div className="card w-auto bg-gray-800 shadow-xl text-white">
       <Link to={`/Search?pid=${props.product.pid}`}>
         <figure className="mt-4">
-          <img className="w-36 h-36 mask rounded" src={`http://13.112.244.194:8000/images/${props.product.img}`} alt={props.product.name} />
+          <img className="w-36 h-36 mask rounded" src={`${process.env.React_App_API}/images/${props.product.img}`} alt={props.product.name} />
         </figure>
       </Link>
       <div className="card-body">
@@ -82,7 +82,7 @@ const ProductDetailCard = React.memo((props) => {
   return (
     <div className="card lg:card-side lg:w-full bg-gray-800 shadow-xl text-white">
       <figure>
-        <img src={`http://13.112.244.194:8000/images/${props.product.img}`} alt={props.product.name} />
+        <img src={`${process.env.React_App_API}/images/${props.product.img}`} alt={props.product.name} />
       </figure>
       <div className="card-body lg:w-full">
         <h2 className="card-title justify-center">{props.product.name}</h2>

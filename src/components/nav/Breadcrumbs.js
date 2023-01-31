@@ -9,14 +9,17 @@ const Breadcrumbs = () => {
   const [product, setProduct] = useState();
 
   useEffect(() => {
-    axios
-      .get("http://13.112.244.194:8000/api/getAllCategory")
-      .then((res) => setCategory(res.data.find((item) => lang.isEqual(Number(searchParams.get("cid")), item.cid))))
-      .catch((e) => console.error(e));
-    axios
-      .get(`http://13.112.244.194:8000/api/getFilteredProducts?pid=${Number(searchParams.get("pid"))}`)
-      .then((res) => setProduct(res.data))
-      .catch((e) => console.error(e));
+    if (!lang.isNil(searchParams.get("pid")))
+      axios
+        .get(`${process.env.React_App_API}/api/getFilteredProducts?pid=${Number(searchParams.get("pid"))}`)
+        .then((res) => setProduct(res.data))
+        .catch((e) => console.error(e));
+
+    if (!lang.isNil(searchParams.get("cid")))
+      axios
+        .get(`${process.env.React_App_API}/api/getAllCategory`)
+        .then((res) => setCategory(res.data.find((item) => lang.isEqual(Number(searchParams.get("cid")), item.cid))))
+        .catch((e) => console.error(e));
   }, [searchParams]);
 
   return (

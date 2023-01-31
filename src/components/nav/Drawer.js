@@ -8,7 +8,7 @@ const Drawer = () => {
 
   useEffect(() => {
     axios
-      .get("http://13.112.244.194:8000/api/getAllCategory")
+      .get(`${process.env.React_App_API}/api/getAllCategory`)
       .then((res) => setCategories(res.data))
       .catch((e) => console.error(e));
   }, []);
