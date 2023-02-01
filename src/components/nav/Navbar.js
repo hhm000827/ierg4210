@@ -18,8 +18,8 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="navbar-center">
-        <Link to="/" className="btn btn-ghost normal-case text-gray-800 text-xl">
-          IERG4210 Online Store
+        <Link to="/" className="btn btn-ghost normal-case text-gray-800 text-xl font-serif">
+          Figure
         </Link>
       </div>
       <div className="navbar-end">
