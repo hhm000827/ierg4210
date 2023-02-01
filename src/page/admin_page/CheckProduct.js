@@ -1,7 +1,7 @@
 import { memo } from "react";
 
-const UpdateProduct = () => {
+const CheckProduct = () => {
   return <div>UpdateProduct</div>;
 };
 
-export default memo(UpdateProduct);
+export default memo(CheckProduct);

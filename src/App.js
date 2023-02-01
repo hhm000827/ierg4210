@@ -2,9 +2,10 @@ import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import AdminPanelLayout from "./page/admin_page/AdminPanelLayout";
+import CheckCategory from "./page/admin_page/CheckCategory";
+import CheckProduct from "./page/admin_page/CheckProduct";
+import CreateCategory from "./page/admin_page/CreateCategory";
 import CreateProduct from "./page/admin_page/CreateProduct";
-import DeleteProduct from "./page/admin_page/DeleteProduct";
-import UpdateProduct from "./page/admin_page/UpdateProduct";
 import Home from "./page/Home";
 import Layout from "./page/Layout";
 import NoPage from "./page/NoPage";
@@ -22,8 +23,9 @@ function App() {
         </Route>
         <Route path="/AdminPanel" element={<AdminPanelLayout />}>
           <Route path="CreateProduct" element={<CreateProduct />} />
-          <Route path="DeleteProduct" element={<DeleteProduct />} />
-          <Route path="UpdateProduct" element={<UpdateProduct />} />
+          <Route path="CheckProduct" element={<CheckProduct />} />
+          <Route path="CreateCategory" element={<CreateCategory />} />
+          <Route path="CheckCategory" element={<CheckCategory />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
