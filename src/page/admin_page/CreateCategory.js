@@ -1,7 +1,8 @@
 import { memo } from "react";
+import Create from "../../components/category_form/Create";
 
 const CreateCategory = () => {
-  return <div>CreateCategory</div>;
+  return <Create />;
 };
 
 export default memo(CreateCategory);

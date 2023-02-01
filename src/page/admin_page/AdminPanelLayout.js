@@ -10,11 +10,10 @@ const AdminPanelLayout = () => {
       <Navbar />
       <div className="flex flex-row gap-4">
         <Menu />
-        <div className="flex flex-col gap-1 w-full">
+        <div className="w-full flex justify-center my-5">
           <Outlet />
         </div>
       </div>
-
       <Footer />
     </div>
   );
