@@ -1,9 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
+import { changeAdminAction } from "../../page/admin_page/AdminActionSlice";
 
 const schema = yup
   .object({
@@ -15,6 +17,8 @@ const schema = yup
   .required();
 
 const Create = () => {
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
@@ -25,11 +29,20 @@ const Create = () => {
   });
 
   const onSubmit = (data) => {
+    let adminAction = "submit create category form";
+    dispatch(changeAdminAction(adminAction));
+
     axios({ method: "post", url: `${process.env.React_App_API}/api/createCategory`, data: data })
       .then((res) => toast.success(res.data))
       .catch((err) => toast.error(err.response.data));
     reset();
   };
+
+  useEffect(() => {
+    let adminAction = "create category";
+    dispatch(changeAdminAction(adminAction));
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl  bg-gray-800">
