@@ -5,6 +5,7 @@ import { memo, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { changeAdminAction } from "../../page/admin_page/AdminActionSlice";
 
@@ -25,6 +26,7 @@ const schema = yup
 
 const Check = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [categories, setCategories] = useState();
   const [selectedCategory, setSelectedCategory] = useState();
   const adminAction = useSelector((state) => state.adminAction.value);
@@ -46,9 +48,7 @@ const Check = () => {
       .then((res) => toast.success(res.data))
       .catch((err) => toast.error(err.response.data));
 
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    setTimeout(() => navigate(0), 1000);
   };
 
   const handleReset = () => {
@@ -61,9 +61,7 @@ const Check = () => {
       .then((res) => toast.success(res.data))
       .catch((err) => toast.error(err.response.data));
 
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    setTimeout(() => navigate(0), 1000);
   };
 
   const handleSelectCategory = (category) => {
@@ -118,7 +116,6 @@ const Check = () => {
                 {...register("name")}
               />
               <p className="text-red-500 text-left">{errors.name?.message}</p>
-
               <div className="btn-group gap-2 mt-2 flex flex-row-reverse">
                 <div className="form-control">
                   <input type="submit" className={`btn btn-success ${!lang.isEqual(modifyAction, adminAction) && "btn-disabled hidden"}`} />
