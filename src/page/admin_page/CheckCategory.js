@@ -1,7 +1,8 @@
 import { memo } from "react";
+import Check from "../../components/category_form/Check";
 
 const CheckCategory = () => {
-  return <div>CheckCategory</div>;
+  return <Check />;
 };
 
 export default memo(CheckCategory);

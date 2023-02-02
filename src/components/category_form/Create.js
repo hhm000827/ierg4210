@@ -7,6 +7,9 @@ import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import { changeAdminAction } from "../../page/admin_page/AdminActionSlice";
 
+let submitAction = "submit create category form";
+let createAction = "create category";
+
 const schema = yup
   .object({
     name: yup
@@ -29,8 +32,7 @@ const Create = () => {
   });
 
   const onSubmit = (data) => {
-    let adminAction = "submit create category form";
-    dispatch(changeAdminAction(adminAction));
+    dispatch(changeAdminAction(submitAction));
 
     axios({ method: "post", url: `${process.env.React_App_API}/api/createCategory`, data: data })
       .then((res) => toast.success(res.data))
@@ -38,9 +40,12 @@ const Create = () => {
     reset();
   };
 
+  const handleReset = () => {
+    reset();
+  };
+
   useEffect(() => {
-    let adminAction = "create category";
-    dispatch(changeAdminAction(adminAction));
+    dispatch(changeAdminAction(createAction));
     // eslint-disable-next-line
   }, []);
 
@@ -60,7 +65,7 @@ const Create = () => {
               <input type="submit" className="btn btn-success" />
             </div>
             <div className="form-control">
-              <input type="reset" className="btn btn-info" onClick={reset} />
+              <input type="reset" className="btn btn-info" onClick={handleReset} />
             </div>
           </div>
         </form>
