@@ -16,7 +16,8 @@ let submitAction = "submit modified category";
 let selectAction = "select category";
 
 const schema = yup
-  .object({
+  .object()
+  .shape({
     name: yup
       .string()
       .matches(/^[A-Za-z0-9 ]*$/, "not allow special letter in name")

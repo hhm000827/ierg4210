@@ -11,7 +11,8 @@ let submitAction = "submit create category form";
 let createAction = "create category";
 
 const schema = yup
-  .object({
+  .object()
+  .shape({
     name: yup
       .string()
       .matches(/^[A-Za-z0-9 ]*$/, "not allow special letter in name")
