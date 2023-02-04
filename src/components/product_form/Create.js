@@ -62,9 +62,8 @@ const Create = () => {
     else {
       data["file"] = file;
       let formData = new FormData();
-      for (let key in data) {
-        formData.append(key, data[key]);
-      }
+      for (let key in data) formData.append(key, data[key]);
+
       axios
         .post(`${process.env.React_App_API}/api/createProduct`, formData, { headers: { "Content-Type": "multipart/form-data" } })
         .then((res) => {
