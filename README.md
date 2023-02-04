@@ -26,7 +26,7 @@ In order to use different API for different environment(development, production)
 
 React_App_API= TYPE_YOUR_API_URL_HERE
 
-## How to Run the project in phase 2
+## How to Run the project's frontend in phase 2
 
 ### Install Node.js
 
