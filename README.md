@@ -26,7 +26,7 @@ In order to use different API for different environment(development, production)
 
 React_App_API= TYPE_YOUR_API_URL_HERE
 
-## How to Run the project in phase 1
+## How to Run the project in phase 2
 
 ### Install Node.js
 
@@ -44,12 +44,11 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-## Remainder of phase 1
+## Remainder of phase 2's frontend
 
-In order to view the table in the shopping cart for displaying the selected items, add something into the shopping cart first by clicking "Add to Cart" button.
-You can adjust the quantity of selected items in the table and then click "Checkout" button to Checkout.
+If using `npm start` to view the page, then in order to get data from DB, turning on backend server is necessary. Please visit ierg4210_server folder and read its README.MD to turn on the server.
 
-## For Future Deployment
+## How to deploying frontend in AWS EC2
 
 ### `npm run build`
 
@@ -59,4 +58,4 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### transfer all files in `build` folder to /var/www/html/
