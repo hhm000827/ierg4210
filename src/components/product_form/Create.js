@@ -199,5 +199,5 @@ const Create = () => {
     </div>
   );
 };
-//https://blog.logrocket.com/using-filereader-api-preview-images-react/
+
 export default memo(Create);
