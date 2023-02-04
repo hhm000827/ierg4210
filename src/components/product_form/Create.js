@@ -11,7 +11,7 @@ import { changeAdminAction } from "../../page/admin_page/AdminActionSlice";
 let submitAction = "submit create product form";
 let createAction = "create product";
 
-const SUPPORTED_FORMATS = [("image/jpg", "image/jpeg", "image/gif", "image/png")];
+const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
 const FILE_SIZE = 5242880; //5MB
 
 const schema = yup
@@ -71,6 +71,9 @@ const Create = () => {
   };
 
   const handleReset = () => {
+    setUploadedFile(null);
+    setFileError(null);
+    setFileDataURL(null);
     reset();
   };
 
@@ -109,15 +112,15 @@ const Create = () => {
       <div className="card-title justify-center mt-2">Create Product</div>
       <div className="card-body">
         <form className="form-control" onSubmit={handleSubmit((data) => onSubmit(data, uploadedFile))}>
-          <div className="grid grid-rows-4 grid-cols-2 gap-5">
-            <div className="flex flex-col">
+          <div className="grid grid-rows-4 grid-cols-2 gap-x-5">
+            <div className="flex flex-col h-fit">
               <label className="label">
                 <span className="label-text">Name</span>
               </label>
               <input type="text" placeholder="Name" className={`input input-bordered ${errors.name && "input-error"}`} {...register("name")} />
               <p className="text-red-500 text-left">{errors.name?.message}</p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col h-fit">
               <label className="label">
                 <span className="label-text">Category</span>
               </label>
@@ -132,28 +135,28 @@ const Create = () => {
               </select>
               <p className="text-red-500 text-left">{errors.cid?.message}</p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col h-fit">
               <label className="label">
                 <span className="label-text">Price</span>
               </label>
               <input type="number" step="0.01" defaultValue={0} className={`${errors.price && "input-error"}`} {...register("price")} />
               <p className="text-red-500 text-left">{errors.price?.message}</p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col h-fit">
               <label className="label">
                 <span className="label-text">Inventory</span>
               </label>
               <input type="number" defaultValue={0} className={`${errors.inventory && "input-error"}`} {...register("inventory")} />
               <p className="text-red-500 text-left">{errors.inventory?.message}</p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col h-fit">
               <label className="label">
                 <span className="label-text">Description</span>
               </label>
               <textarea className={`textarea textarea-bordered ${errors.description && "textarea-error"}`} {...register("description")} placeholder="Product Description"></textarea>
               <p className={`text-red-500 text-left`}>{errors.description?.message}</p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col h-fit">
               <label className="label">
                 <span className="label-text">Drag & Drop or Click the box to upload image</span>
               </label>
@@ -167,7 +170,12 @@ const Create = () => {
               />
               <p className={`text-red-500 text-left`}>{!lang.isNil(fileError) && fileError}</p>
             </div>
-            {fileDataURL ? <p className="img-preview-wrapper">{<img src={fileDataURL} alt="preview" />}</p> : null}
+            {fileDataURL ? (
+              <p className="text-left w-fit h-fit">
+                image preview:
+                <img className="w-36 h-36" src={fileDataURL} alt="preview" />
+              </p>
+            ) : null}
           </div>
 
           <div className="btn-group gap-2 mt-2 flex flex-row-reverse">

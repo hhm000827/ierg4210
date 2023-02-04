@@ -46,10 +46,11 @@ const Check = () => {
     data["cid"] = cid;
 
     axios({ method: "put", url: `${process.env.React_App_API}/api/updateCategory`, data: data })
-      .then((res) => toast.success(res.data))
+      .then((res) => {
+        toast.success(res.data);
+        setTimeout(() => navigate(0), 1000);
+      })
       .catch((err) => toast.error(err.response.data));
-
-    setTimeout(() => navigate(0), 1000);
   };
 
   const handleReset = () => {
@@ -59,10 +60,11 @@ const Check = () => {
   const handleDelete = (cid) => {
     dispatch(changeAdminAction(deleteAction));
     axios({ method: "delete", url: `${process.env.React_App_API}/api/deleteCategory`, data: { cid: cid } })
-      .then((res) => toast.success(res.data))
+      .then((res) => {
+        toast.success(res.data);
+        setTimeout(() => navigate(0), 1000);
+      })
       .catch((err) => toast.error(err.response.data));
-
-    setTimeout(() => navigate(0), 1000);
   };
 
   const handleSelectCategory = (category) => {
