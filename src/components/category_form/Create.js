@@ -35,7 +35,8 @@ const Create = () => {
   const onSubmit = (data) => {
     dispatch(changeAdminAction(submitAction));
 
-    axios({ method: "post", url: `${process.env.React_App_API}/api/createCategory`, data: data })
+    axios
+      .post(`${process.env.React_App_API}/api/createCategory`, data)
       .then((res) => toast.success(res.data))
       .catch((err) => toast.error(err.response.data));
     reset();

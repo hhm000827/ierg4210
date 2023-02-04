@@ -12,7 +12,7 @@ let submitAction = "submit create product form";
 let createAction = "create product";
 
 const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
-const FILE_SIZE = 5242880; //5MB
+const FILE_SIZE = 5000000; //5MB
 
 const schema = yup
   .object()
@@ -61,13 +61,21 @@ const Create = () => {
     if (lang.isNil(file) || lang.isNaN(file) || file.size <= 0) setFileError("image is required");
     else {
       data["file"] = file;
-      console.log(data);
+      let formData = new FormData();
+      for (let key in data) {
+        formData.append(key, data[key]);
+      }
+      axios
+        .post(`${process.env.React_App_API}/api/createProduct`, formData, { headers: { "Content-Type": "multipart/form-data" } })
+        .then((res) => {
+          toast.success(res.data);
+          setUploadedFile(null);
+          setFileError(null);
+          setFileDataURL(null);
+          reset();
+        })
+        .catch((err) => toast.error(err.response.data));
     }
-
-    // axios({ method: "post", url: `${process.env.React_App_API}/api/createCategory`, data: data })
-    //   .then((res) => toast.success(res.data))
-    //   .catch((err) => toast.error(err.response.data));
-    // reset();
   };
 
   const handleReset = () => {
@@ -158,7 +166,7 @@ const Create = () => {
             </div>
             <div className="flex flex-col h-fit">
               <label className="label">
-                <span className="label-text">Drag & Drop or Click the box to upload image</span>
+                <span className="label-text">Drag & Drop or Click to upload image (max: 5MB)</span>
               </label>
               <input
                 type="file"

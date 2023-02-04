@@ -45,7 +45,8 @@ const Check = () => {
     dispatch(changeAdminAction(submitAction));
     data["cid"] = cid;
 
-    axios({ method: "put", url: `${process.env.React_App_API}/api/updateCategory`, data: data })
+    axios
+      .put(`${process.env.React_App_API}/api/updateCategory`, data)
       .then((res) => {
         toast.success(res.data);
         setTimeout(() => navigate(0), 1000);
