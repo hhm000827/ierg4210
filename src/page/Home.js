@@ -42,13 +42,17 @@ function Home() {
     <>
       <DisplayedProduct products={currentItems} />
       <ReactPaginate
-        className="btn-group gap-2 flex justify-center"
+        className="btn-group justify-center m-2"
+        pageClassName="btn btn-xs"
+        breakClassName="btn btn-xs"
+        nextClassName="btn btn-xs"
+        previousClassName="btn btn-xs"
         breakLabel="..."
-        nextLabel="next >"
+        nextLabel="»"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
         pageCount={pageCount}
-        previousLabel="< previous"
+        previousLabel="«"
         renderOnZeroPageCount={null}
       />
     </>
