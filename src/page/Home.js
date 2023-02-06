@@ -43,10 +43,10 @@ function Home() {
       <DisplayedProduct products={currentItems} />
       <ReactPaginate
         className="btn-group justify-center m-2"
-        pageClassName="btn btn-xs"
-        breakClassName="btn btn-xs"
-        nextClassName="btn btn-xs"
-        previousClassName="btn btn-xs"
+        pageClassName="btn btn-sm"
+        breakClassName="btn btn-sm"
+        nextClassName="btn btn-sm"
+        previousClassName="btn btn-sm"
         breakLabel="..."
         nextLabel="»"
         onPageChange={handlePageClick}
