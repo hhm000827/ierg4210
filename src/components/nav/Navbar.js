@@ -1,6 +1,6 @@
+import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { setIsLogin } from "../login/LoginSlice";
 import ShoppingCart from "../shoppingCart/ShoppingCart";
 
 const Navbar = () => {
@@ -22,10 +22,16 @@ const Navbar = () => {
           </div>
           <ul tabIndex={0} className="menu dropdown-content shadow bg-base-100 rounded-box w-fit">
             <li>
-              <button className={`${isLogin && "hidden disabled"}`} onClick={(e) => dispatch(setIsLogin())}>
+              <label htmlFor="loginForm" className={`btn btn-ghost normal-case rounded-2xl ${isLogin && "hidden disabled"}`}>
                 Login
-              </button>
-              <button className={`${!isLogin && "hidden disabled"}`} onClick={(e) => dispatch({ type: "logout" })}>
+              </label>
+              <button
+                className={`${!isLogin && "hidden disabled"}`}
+                onClick={(e) => {
+                  dispatch({ type: "logout" });
+                  toast.success("Logout Successfully");
+                }}
+              >
                 Logout
               </button>
             </li>
