@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 import * as yup from "yup";
 import { changeAdminAction } from "../../page/admin_page/AdminActionSlice";
 
@@ -77,7 +78,7 @@ const Check = () => {
   useEffect(() => {
     dispatch(changeAdminAction(checkAction));
     axios
-      .get(`${process.env.React_App_API}/api/getAllCategory`)
+      .get(`${process.env.React_App_API}/api/getAllCategory?dropdown=true`)
       .then((res) => setCategories(res.data))
       .catch((e) => console.error(e));
     // eslint-disable-next-line
@@ -88,33 +89,17 @@ const Check = () => {
       <div className="card-title justify-center mt-2">Check Category</div>
       <div className="card-body flex flex-col">
         {/* dropdown for choosing category */}
-        <div className="dropdown dropdown-bottom w-fit">
-          <label tabIndex={0} className="btn m-1 normal-case flex justify-start w-fit">
-            Choose Category
-          </label>
-          <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box">
-            {!lang.isEmpty(categories) &&
-              categories.map((category) => {
-                return (
-                  <li key={`checkCategory-${category.name}`}>
-                    <button className="text-left btn-sm" onClick={(e) => handleSelectCategory(category)}>
-                      {category.name}
-                    </button>
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
+        <Select className="flex justify-center text-black" placeholder="Choose a category" onChange={handleSelectCategory} options={categories} isSearchable isClearable />
         {/* form for category */}
         {lang.isObject(selectedCategory) && (
           <div>
-            <form className="form-control" onSubmit={handleSubmit((data) => onSubmit(data, selectedCategory.cid))}>
+            <form className="form-control" onSubmit={handleSubmit((data) => onSubmit(data, selectedCategory.value))}>
               <label className="label">
                 <span className="label-text">Name</span>
               </label>
               <input
                 type="text"
-                defaultValue={selectedCategory.name}
+                defaultValue={selectedCategory.label}
                 className={`input input-bordered ${errors.name && "input-error"}`}
                 disabled={!lang.isEqual(modifyAction, adminAction)}
                 {...register("name")}
@@ -130,7 +115,7 @@ const Check = () => {
               </div>
             </form>
             <div className="btn-group gap-2 mt-2 flex flex-row justify-end">
-              <button className="btn btn-error" onClick={() => handleDelete(selectedCategory.cid)}>
+              <button className="btn btn-error" onClick={() => handleDelete(selectedCategory.value)}>
                 Delete
               </button>
               <button className="btn btn-warning" onClick={() => dispatch(changeAdminAction(modifyAction))}>
