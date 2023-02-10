@@ -89,7 +89,9 @@ const Check = () => {
       <div className="card-title justify-center mt-2">Check Category</div>
       <div className="card-body flex flex-col">
         {/* dropdown for choosing category */}
-        <Select className="flex justify-center text-black" placeholder="Choose a category" onChange={handleSelectCategory} options={categories} isSearchable isClearable />
+        <div className="flex justify-center">
+          <Select className=" text-black" placeholder="Choose a category" onChange={handleSelectCategory} options={categories} isSearchable isClearable />
+        </div>
         {/* form for category */}
         {lang.isObject(selectedCategory) && (
           <div>
