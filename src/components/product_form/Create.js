@@ -2,9 +2,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import lang from "lodash/lang";
 import { memo, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import Select from "react-select";
 import * as yup from "yup";
 import { changeAdminAction } from "../../page/admin_page/AdminActionSlice";
 
@@ -21,7 +22,14 @@ const schema = yup
       .string()
       .matches(/^[A-Za-z0-9 ]*$/, "not allow special letter in name")
       .required("name is required"),
-    cid: yup.number().min(1, "category is required").typeError("category is required").required("category is required"),
+    cid: yup
+      .object()
+      .shape({
+        label: yup.string().required("category is required"),
+        value: yup.number().required("category is required"),
+      })
+      .nullable()
+      .required("category is required"),
     price: yup.number().min(0.001, "price must be greater than 0").typeError("price is required").required("price is required"),
     inventory: yup.number().min(1, "inventory must be greater than 0").typeError("inventory is required").required("inventory is required"),
     description: yup
@@ -42,6 +50,7 @@ const Create = () => {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -60,6 +69,7 @@ const Create = () => {
     dispatch(changeAdminAction(submitAction));
     if (lang.isNil(file) || lang.isNaN(file) || file.size <= 0) setFileError("image is required");
     else {
+      data["cid"] = data.cid.value;
       data["file"] = file;
       let formData = new FormData();
       for (let key in data) formData.append(key, data[key]);
@@ -87,7 +97,7 @@ const Create = () => {
   useEffect(() => {
     dispatch(changeAdminAction(createAction));
     axios
-      .get(`${process.env.React_App_API}/api/getAllCategory`)
+      .get(`${process.env.React_App_API}/api/getAllCategory?dropdown=true`)
       .then((res) => setCategories(res.data))
       .catch((err) => toast.error(err.response.data));
     // eslint-disable-next-line
@@ -131,15 +141,12 @@ const Create = () => {
               <label className="label">
                 <span className="label-text">Category</span>
               </label>
-              <select defaultValue="Choose a category" className={`select select-bordered w-full max-w-xs  ${errors.cid && "select-error"}`} {...register("cid")}>
-                <option disabled>Choose a category</option>
-                {!lang.isEmpty(categories) &&
-                  categories.map((category) => (
-                    <option key={`createProduct-${category.cid}`} value={category.cid}>
-                      {category.name}
-                    </option>
-                  ))}
-              </select>
+              <Controller
+                name="cid"
+                control={control}
+                defaultValue="not yet choose category"
+                render={({ field }) => <Select {...field} className="text-black" options={categories} isSearchable isClearable />}
+              />
               <p className="text-red-500 text-left">{errors.cid?.message}</p>
             </div>
             <div className="flex flex-col h-fit">

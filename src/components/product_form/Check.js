@@ -2,10 +2,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import lang from "lodash/lang";
 import { memo, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 import * as yup from "yup";
 import { changeAdminAction } from "../../page/admin_page/AdminActionSlice";
 
@@ -25,7 +26,14 @@ const schema = yup
       .string()
       .matches(/^[A-Za-z0-9 ]*$/, "not allow special letter in name")
       .required("name is required"),
-    cid: yup.number().min(1, "category is required").typeError("category is required").required("category is required"),
+    cid: yup
+      .object()
+      .shape({
+        label: yup.string().required("category is required"),
+        value: yup.number().required("category is required"),
+      })
+      .nullable()
+      .required("category is required"),
     price: yup.number().min(0.001, "price must be greater than 0").typeError("price is required").required("price is required"),
     inventory: yup.number().min(1, "inventory must be greater than 0").typeError("inventory is required").required("inventory is required"),
     description: yup
@@ -50,6 +58,7 @@ const Check = () => {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -67,6 +76,7 @@ const Check = () => {
   const onSubmit = (data, selectedProduct, file) => {
     dispatch(changeAdminAction(submitAction));
 
+    data["cid"] = data.cid.value;
     data["pid"] = selectedProduct.pid;
     data["img"] = selectedProduct.img;
     data["oldName"] = selectedProduct.name;
@@ -95,7 +105,6 @@ const Check = () => {
 
   const handleDelete = (pid, img) => {
     dispatch(changeAdminAction(deleteAction));
-    console.log({ pid: pid, img: img });
     axios({ method: "delete", url: `${process.env.React_App_API}/api/deleteProduct`, data: { pid: pid, img: img } })
       .then((res) => {
         toast.success(res.data);
@@ -109,10 +118,12 @@ const Check = () => {
     setUploadedFile(null);
     setFileError(null);
     setFileDataURL(null);
-    axios
-      .get(`${process.env.React_App_API}/api/getFilteredProducts?pid=${product.pid}`)
-      .then((res) => setSelectedProduct(res.data))
-      .catch((e) => console.error(e));
+    if (!lang.isNil(product))
+      axios
+        .get(`${process.env.React_App_API}/api/getFilteredProducts?pid=${product.value}`)
+        .then((res) => setSelectedProduct(res.data))
+        .catch((e) => console.error(e));
+    else setSelectedProduct(null);
     reset();
   };
 
@@ -123,7 +134,7 @@ const Check = () => {
       .then((res) => setProducts(res.data))
       .catch((e) => console.error(e));
     axios
-      .get(`${process.env.React_App_API}/api/getAllCategory`)
+      .get(`${process.env.React_App_API}/api/getAllCategory?dropdown=true`)
       .then((res) => setCategories(res.data))
       .catch((e) => console.error(e));
     // eslint-disable-next-line
@@ -155,22 +166,8 @@ const Check = () => {
       <div className="card-title justify-center mt-2">Check Product</div>
       <div className="card-body flex flex-col">
         {/* dropdown for choosing category */}
-        <div className="dropdown dropdown-bottom w-fit">
-          <label tabIndex={0} className="btn m-1 normal-case flex justify-start w-fit">
-            Choose Product
-          </label>
-          <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box">
-            {!lang.isEmpty(products) &&
-              products.map((product) => {
-                return (
-                  <li key={`checkProduct-${product.name}`}>
-                    <button className="text-left btn-sm" onClick={(e) => handleSelectProduct(product)}>
-                      {product.name}
-                    </button>
-                  </li>
-                );
-              })}
-          </ul>
+        <div className="flex justify-center">
+          <Select className="text-black" placeholder="Choose a product" onChange={handleSelectProduct} options={products} isSearchable isClearable />
         </div>
         {/* form for category */}
         {lang.isObject(selectedProduct) && (
@@ -194,20 +191,12 @@ const Check = () => {
                   <label className="label">
                     <span className="label-text">Category (current: {selectedProduct.category})</span>
                   </label>
-                  <select
-                    defaultValue="Choose a category"
-                    className={`select select-bordered w-full max-w-xs  ${errors.cid && "select-error"}`}
-                    disabled={!lang.isEqual(modifyAction, adminAction)}
-                    {...register("cid")}
-                  >
-                    <option disabled>Choose a category</option>
-                    {!lang.isEmpty(categories) &&
-                      categories.map((category) => (
-                        <option key={`createProduct-${category.cid}`} value={category.cid}>
-                          {category.name}
-                        </option>
-                      ))}
-                  </select>
+                  <Controller
+                    name="cid"
+                    control={control}
+                    defaultValue="not yet choose category"
+                    render={({ field }) => <Select {...field} className="text-black" options={categories} isSearchable isClearable isDisabled={!lang.isEqual(modifyAction, adminAction)} />}
+                  />
                   <p className="text-red-500 text-left">{errors.cid?.message}</p>
                 </div>
                 <div className="flex flex-col h-fit">
