@@ -37,10 +37,10 @@ const LoginForm = () => {
 
   return (
     <>
-      <input type="checkbox" id="loginForm" className="modal-toggle" />
-      <label htmlFor="loginForm" className="modal cursor-pointer" onClick={() => reset()}>
+      <input type="checkbox" id="loginForm" className="modal-toggle" onClick={() => reset()} />
+      <label htmlFor="loginForm" className="modal cursor-pointer">
         <label className="modal-box relative" htmlFor="">
-          <label htmlFor="loginForm" className="btn btn-sm btn-circle btn-error absolute right-2 top-2" onClick={() => reset()}>
+          <label htmlFor="loginForm" className="btn btn-sm btn-circle btn-error absolute right-2 top-2">
             ✕
           </label>
           <form className="form-control" onSubmit={handleSubmit(onSubmit)}>
@@ -55,7 +55,7 @@ const LoginForm = () => {
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input type="password" placeholder="password" className={`input input-bordered ${errors.password && "input-error"}`} {...register("password")} />
+              <input type="password" placeholder="Password" className={`input input-bordered ${errors.password && "input-error"}`} {...register("password")} />
               <p className="text-red-500 text-left">{errors.password?.message}</p>
             </div>
             <div className="form-control mt-6">
