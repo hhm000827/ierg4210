@@ -22,9 +22,11 @@ const Navbar = () => {
           </div>
           <ul tabIndex={0} className="menu dropdown-content shadow bg-base-100 rounded-box w-fit">
             <li>
-              <label htmlFor="loginForm" className={`btn btn-ghost normal-case rounded-2xl ${isLogin && "hidden disabled"}`}>
+              <label htmlFor="loginForm" className={`btn btn-ghost normal-case font-normal rounded-2xl ${isLogin && "hidden disabled"}`}>
                 Login
               </label>
+            </li>
+            <li>
               <button
                 className={`${!isLogin && "hidden disabled"}`}
                 onClick={(e) => {
@@ -34,6 +36,11 @@ const Navbar = () => {
               >
                 Logout
               </button>
+            </li>
+            <li>
+              <label htmlFor="passwordForm" className={`btn btn-ghost normal-case font-normal text-left rounded-none ${!isLogin && "hidden disabled"}`}>
+                Change Password
+              </label>
             </li>
             <li>
               <button className={`${!isLogin && "hidden disabled"}`}>Record</button>

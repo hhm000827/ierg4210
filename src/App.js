@@ -2,6 +2,7 @@ import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import LoginForm from "./components/login/LoginForm";
+import PasswordForm from "./components/login/PasswordForm";
 import AdminPanelLayout from "./page/admin_page/AdminPanelLayout";
 import CheckCategory from "./page/admin_page/CheckCategory";
 import CheckProduct from "./page/admin_page/CheckProduct";
@@ -31,6 +32,7 @@ function App() {
         </Route>
       </Routes>
       <LoginForm />
+      <PasswordForm />
     </div>
   );
 }
