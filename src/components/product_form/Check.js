@@ -38,7 +38,7 @@ const schema = yup
     inventory: yup.number().min(1, "inventory must be greater than 0").typeError("inventory is required").required("inventory is required"),
     description: yup
       .string()
-      .matches(/^[A-Za-z0-9 ]*$/, "not allow special letter in description")
+      .matches(/^[\w,. ]*$/, "not allow special letter in description")
       .required("description is required"),
   })
   .required();
