@@ -9,10 +9,11 @@ import { setIsLogin } from "./LoginSlice";
 const schema = yup
   .object()
   .shape({
-    name: yup
+    email: yup
       .string()
-      .matches(/^[A-Za-z0-9]*$/, "not allow special letter in name")
-      .required("name is required"),
+      .email("must be a valid email")
+      .matches(/^[\w%+-.@]*$/, "must be a valid email")
+      .required("email is required"),
     password: yup.string().min(8, "password is too short - should be 8 chars minimum.").required("password is required"),
   })
   .required();
@@ -46,10 +47,10 @@ const LoginForm = () => {
           <form className="form-control" onSubmit={handleSubmit(onSubmit)}>
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Username</span>
+                <span className="label-text">Email</span>
               </label>
-              <input type="text" placeholder="Username" className={`input input-bordered ${errors.name && "input-error"}`} {...register("name")} />
-              <p className="text-red-500 text-left">{errors.name?.message}</p>
+              <input type="email" placeholder="Email" className={`input input-bordered ${errors.email && "input-error"}`} {...register("email")} />
+              <p className="text-red-500 text-left">{errors.email?.message}</p>
             </div>
             <div className="form-control">
               <label className="label">
