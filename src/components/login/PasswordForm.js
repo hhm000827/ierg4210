@@ -1,4 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
@@ -13,10 +14,10 @@ const schema = yup
       .email("must be a valid email")
       .matches(/^[\w%+-.@]*$/, "must be a valid email")
       .required("email is required"),
-    password: yup.string().min(8, "password is too short - should be 8 chars minimum.").required("password is required"),
+    password: yup.string().required("password is required"),
     newPassword: yup
       .string()
-      .min(8, "password is too short - should be 8 chars minimum.")
+      .min(5, "password is too short - should be 8 chars minimum.")
       .notOneOf([yup.ref("password"), null], "New Password must not same as old password")
       .required("new password is required"),
   })
@@ -35,8 +36,14 @@ const PasswordForm = () => {
 
   const onSubmit = (data) => {
     document.getElementById("passwordForm").checked = false;
-    dispatch({ type: "logout" });
-    toast.success("Password changed successfully");
+    axios
+      .post(`${process.env.React_App_API}/api/changePassword`, data)
+      .then((res) => {
+        toast.success(res.data);
+        dispatch({ type: "logout" });
+        setTimeout(() => window.location.assign("/"), "1000");
+      })
+      .catch((err) => toast.error(err.response.data));
     reset();
   };
 
