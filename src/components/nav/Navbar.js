@@ -1,6 +1,6 @@
 import axios from "axios";
 import lang from "lodash/lang";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -11,11 +11,28 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const [isAdmin, setIsAdmin] = useState(false);
 
+  useEffect(() => {
+    const verify = async () => {
+      await axios
+        .get(`${process.env.React_App_API}/api/verify`, {
+          headers: {
+            Authorization: sessionStorage.getItem("auth"),
+          },
+        })
+        .then((res) => {
+          if (lang.isEqual(res.data, true)) setIsAdmin(res.data);
+        })
+        .catch((err) => console.log(err.data));
+    };
+
+    verify();
+  }, []);
+
   window.addEventListener("storage", () => {
     axios
       .get(`${process.env.React_App_API}/api/verify`, {
         headers: {
-          Authorization: sessionStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("auth"),
         },
       })
       .then((res) => {
@@ -38,12 +55,12 @@ const Navbar = () => {
             </label>
           </div>
           <ul tabIndex={0} className="menu dropdown-content shadow bg-base-100 rounded-box w-fit">
+            <li className="disabled m-2 ml-4 text-left">{isLogin.name ? isLogin.name : "guest"}</li>
             <li>
               <label htmlFor="loginForm" className={`btn btn-ghost normal-case font-normal rounded-2xl ${isLogin.isLogin && "hidden disabled"}`}>
                 Login
               </label>
             </li>
-            <li className={`${!isLogin.isLogin && !isLogin.name && "hidden"} disabled m-2 ml-4 text-left`}>{isLogin.name}</li>
             <li>
               <button
                 className={`${!isLogin.isLogin && "hidden disabled"}`}

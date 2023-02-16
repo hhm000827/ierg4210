@@ -40,7 +40,7 @@ const LoginForm = () => {
         let data = res.data;
         dispatch(setIsLogin(data.name));
         toast.success(data.message);
-        sessionStorage.setItem("token", data.token);
+        sessionStorage.setItem("auth", data.token);
         window.dispatchEvent(new Event("storage"));
       })
       .catch((err) => toast.error(err.response.data));

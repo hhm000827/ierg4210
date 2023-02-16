@@ -32,7 +32,7 @@ const rootReducer = (state, action) => {
     state = undefined;
     localStorage.removeItem("persist:shoppingCart");
     localStorage.removeItem("persist:isLogin");
-    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("auth");
   }
   return combinedReducers(state, action);
 };
