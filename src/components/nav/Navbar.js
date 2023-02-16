@@ -1,7 +1,6 @@
 import axios from "axios";
 import lang from "lodash/lang";
 import { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ShoppingCart from "../shoppingCart/ShoppingCart";
@@ -67,7 +66,7 @@ const Navbar = () => {
                 onClick={(e) => {
                   dispatch({ type: "logout" });
                   setIsAdmin(false);
-                  toast.success("Logout Successfully");
+                  window.location.assign("/");
                 }}
               >
                 Logout
