@@ -1,3 +1,6 @@
+import axios from "axios";
+import lang from "lodash/lang";
+import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -6,6 +9,20 @@ import ShoppingCart from "../shoppingCart/ShoppingCart";
 const Navbar = () => {
   const isLogin = useSelector((state) => state.isLogin.value);
   const dispatch = useDispatch();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  window.addEventListener("storage", () => {
+    axios
+      .get(`${process.env.React_App_API}/api/verify`, {
+        headers: {
+          Authorization: sessionStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        if (lang.isEqual(res.data, true)) setIsAdmin(res.data);
+      })
+      .catch((err) => console.log(err.data));
+  });
 
   return (
     <div className="sticky top-0 z-50 navbar bg-gradient-to-r from-cyan-500 to-blue-500">
@@ -22,15 +39,17 @@ const Navbar = () => {
           </div>
           <ul tabIndex={0} className="menu dropdown-content shadow bg-base-100 rounded-box w-fit">
             <li>
-              <label htmlFor="loginForm" className={`btn btn-ghost normal-case font-normal rounded-2xl ${isLogin && "hidden disabled"}`}>
+              <label htmlFor="loginForm" className={`btn btn-ghost normal-case font-normal rounded-2xl ${isLogin.isLogin && "hidden disabled"}`}>
                 Login
               </label>
             </li>
+            <li className={`${!isLogin.isLogin && !isLogin.name && "hidden"} disabled m-2 ml-4 text-left`}>{isLogin.name}</li>
             <li>
               <button
-                className={`${!isLogin && "hidden disabled"}`}
+                className={`${!isLogin.isLogin && "hidden disabled"}`}
                 onClick={(e) => {
                   dispatch({ type: "logout" });
+                  setIsAdmin(false);
                   toast.success("Logout Successfully");
                 }}
               >
@@ -38,27 +57,29 @@ const Navbar = () => {
               </button>
             </li>
             <li>
-              <label htmlFor="passwordForm" className={`btn btn-ghost normal-case font-normal text-left rounded-none ${!isLogin && "hidden disabled"}`}>
+              <label htmlFor="passwordForm" className={`btn btn-ghost normal-case font-normal text-left rounded-none ${!isLogin.isLogin && "hidden disabled"}`}>
                 Change Password
               </label>
             </li>
             <li>
-              <button className={`${!isLogin && "hidden disabled"}`}>Record</button>
+              <button className={`${!isLogin.isLogin && "hidden disabled"}`}>Record</button>
             </li>
           </ul>
         </div>
         {/* admin panel button */}
-        <div className="tooltip tooltip-bottom" data-tip="Admin Panel">
-          <Link to="/AdminPanel" className="btn btn-sm btn-ghost">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" color="black">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25"
-              />
-            </svg>
-          </Link>
-        </div>
+        {isAdmin && (
+          <div className="tooltip tooltip-bottom" data-tip="Admin Panel">
+            <Link to="/AdminPanel" className="btn btn-sm btn-ghost">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6" color="black">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25"
+                />
+              </svg>
+            </Link>
+          </div>
+        )}
       </div>
       <div className="navbar-center">
         <Link to="/" className="btn btn-ghost normal-case text-gray-800 text-xl font-serif">

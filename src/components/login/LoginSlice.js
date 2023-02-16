@@ -6,7 +6,7 @@ export const LoginSlice = createSlice({
   },
   reducers: {
     setIsLogin: (state, payload) => {
-      state.value = true;
+      state.value = { isLogin: true, name: payload.payload };
     },
   },
 });

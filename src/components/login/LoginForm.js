@@ -1,9 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
+
 import { setIsLogin } from "./LoginSlice";
 
 const schema = yup
@@ -14,7 +16,7 @@ const schema = yup
       .email("must be a valid email")
       .matches(/^[\w%+-.@]*$/, "must be a valid email")
       .required("email is required"),
-    password: yup.string().min(8, "password is too short - should be 8 chars minimum.").required("password is required"),
+    password: yup.string().min(5, "password is too short - should be 5 chars minimum.").required("password is required"),
   })
   .required();
 
@@ -31,8 +33,18 @@ const LoginForm = () => {
 
   const onSubmit = (data) => {
     document.getElementById("loginForm").checked = false;
-    dispatch(setIsLogin());
-    toast.success("Login successfully");
+
+    axios
+      .post(`${process.env.React_App_API}/api/login`, data)
+      .then((res) => {
+        let data = res.data;
+        dispatch(setIsLogin(data.name));
+        toast.success(data.message);
+        sessionStorage.setItem("token", data.token);
+        window.dispatchEvent(new Event("storage"));
+      })
+      .catch((err) => toast.error(err.response.data));
+
     reset();
   };
 
