@@ -85,7 +85,7 @@ const Check = () => {
     for (let key in data) formData.append(key, data[key]);
 
     axios
-      .put(`${process.env.React_App_API}/api/updateProduct`, formData, { headers: { "Content-Type": "multipart/form-data" } })
+      .put(`${process.env.React_App_API}/api/updateProduct`, formData, { headers: { "Content-Type": "multipart/form-data", Authorization: sessionStorage.getItem("auth") } })
       .then((res) => {
         toast.success(res.data);
         setUploadedFile(null);
@@ -105,7 +105,14 @@ const Check = () => {
 
   const handleDelete = (pid, img) => {
     dispatch(changeAdminAction(deleteAction));
-    axios({ method: "delete", url: `${process.env.React_App_API}/api/deleteProduct`, data: { pid: pid, img: img } })
+    axios({
+      method: "delete",
+      url: `${process.env.React_App_API}/api/deleteProduct`,
+      data: { pid: pid, img: img },
+      headers: {
+        Authorization: sessionStorage.getItem("auth"),
+      },
+    })
       .then((res) => {
         toast.success(res.data);
         setTimeout(() => navigate(0), 1000);

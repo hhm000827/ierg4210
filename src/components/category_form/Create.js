@@ -36,7 +36,11 @@ const Create = () => {
     dispatch(changeAdminAction(submitAction));
 
     axios
-      .post(`${process.env.React_App_API}/api/createCategory`, data)
+      .post(`${process.env.React_App_API}/api/createCategory`, data, {
+        headers: {
+          Authorization: sessionStorage.getItem("auth"),
+        },
+      })
       .then((res) => toast.success(res.data))
       .catch((err) => toast.error(err.response.data));
     reset();

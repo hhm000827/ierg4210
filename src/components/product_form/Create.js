@@ -75,7 +75,7 @@ const Create = () => {
       for (let key in data) formData.append(key, data[key]);
 
       axios
-        .post(`${process.env.React_App_API}/api/createProduct`, formData, { headers: { "Content-Type": "multipart/form-data" } })
+        .post(`${process.env.React_App_API}/api/createProduct`, formData, { headers: { "Content-Type": "multipart/form-data", Authorization: sessionStorage.getItem("auth") } })
         .then((res) => {
           toast.success(res.data);
           setUploadedFile(null);
