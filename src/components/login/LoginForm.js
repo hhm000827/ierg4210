@@ -32,11 +32,11 @@ const LoginForm = () => {
   });
 
   const onSubmit = (data) => {
-    document.getElementById("loginForm").checked = false;
-
     axios
       .post(`${process.env.React_App_API}/api/login`, data)
       .then((res) => {
+        reset();
+        document.getElementById("loginForm").checked = false;
         let data = res.data;
         dispatch(setIsLogin(data.name));
         toast.success(data.message);
@@ -44,8 +44,6 @@ const LoginForm = () => {
         window.dispatchEvent(new Event("storage"));
       })
       .catch((err) => toast.error(err.response.data));
-
-    reset();
   };
 
   return (

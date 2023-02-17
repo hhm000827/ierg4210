@@ -35,16 +35,16 @@ const PasswordForm = () => {
   });
 
   const onSubmit = (data) => {
-    document.getElementById("passwordForm").checked = false;
     axios
       .post(`${process.env.React_App_API}/api/changePassword`, data)
       .then((res) => {
+        reset();
+        document.getElementById("passwordForm").checked = false;
         toast.success(res.data);
         dispatch({ type: "logout" });
         setTimeout(() => window.location.assign("/"), "1000");
       })
       .catch((err) => toast.error(err.response.data));
-    reset();
   };
 
   return (
