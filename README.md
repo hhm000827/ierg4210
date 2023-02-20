@@ -26,7 +26,7 @@ In order to use different API for different environment(development, production)
 
 React_App_API= TYPE_YOUR_API_URL_HERE
 
-## How to Run the project's frontend in phase 2
+## How to Run the project's frontend in phase 3
 
 ### Install Node.js
 
@@ -47,6 +47,12 @@ You may also see any lint errors in the console.
 ## Remainder of phase 2's frontend
 
 If using `npm start` to view the page, then in order to get data from DB, turning on backend server is necessary. Please visit ierg4210_server folder and read its README.MD to turn on the server.
+
+If you want to not visit/visit admin panel, then please login in:
+| email | password | role|
+| ------ | ------ | ------ |
+| admin@admin.com | admin | admin |
+| user@user.com | user1234 | user |
 
 ## How to deploying frontend in AWS EC2
 
