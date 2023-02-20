@@ -1,26 +1,46 @@
 import axios from "axios";
 import lang from "lodash/lang";
 import { memo, useEffect, useState } from "react";
-import ReactPaginate from "react-paginate";
 import { Card } from "../components/card/Card";
 
 const DisplayedProduct = (props) => {
-  return (
-    <div className="grid h-auto gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-      {!lang.isEmpty(props.products) &&
-        props.products.map((product) => (
-          <div key={`home-${product.name}`}>
-            <Card product={product} />
-          </div>
-        ))}
+  return props.products.map((product) => (
+    <div key={`home-${product.name}`}>
+      <Card product={product} />
     </div>
-  );
+  ));
 };
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [itemOffset, setItemOffset] = useState(0);
+  const [currentItems, setCurrentItems] = useState([]);
+  const [hasMore, setHasMore] = useState(false);
   const itemsPerPage = 6;
+
+  window.onscroll = () => handleScroll();
+
+  const loadItems = () => {
+    if (lang.isArray(products)) {
+      if (products.length < itemsPerPage) {
+        setCurrentItems(products);
+        setHasMore(false);
+      } else if (products.length > itemOffset * itemsPerPage && hasMore) {
+        setCurrentItems([...currentItems, ...products.slice(itemOffset * itemsPerPage, (itemOffset + 1) * itemsPerPage)]);
+        setItemOffset((itemOffset) => itemOffset + 1);
+      } else if (products.length <= itemOffset * itemsPerPage && itemOffset > 0 && hasMore) {
+        setCurrentItems([...currentItems, ...products.slice(itemOffset * itemsPerPage, products.length)]);
+        setHasMore(false);
+      }
+    }
+  };
+
+  function handleScroll() {
+    var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrolled = (winScroll / height) * 100;
+    if (scrolled === 100) loadItems();
+  }
 
   useEffect(() => {
     axios
@@ -29,34 +49,13 @@ function Home() {
       .catch((e) => console.error(e));
   }, []);
 
-  const endOffset = itemOffset + itemsPerPage;
-  const currentItems = products.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(products.length / itemsPerPage);
+  useEffect(() => {
+    setHasMore(true);
+    if (!lang.isEmpty(products)) loadItems();
+    // eslint-disable-next-line
+  }, [products]);
 
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % products.length;
-    setItemOffset(newOffset);
-  };
-
-  return (
-    <>
-      <DisplayedProduct products={currentItems} />
-      <ReactPaginate
-        className="btn-group justify-center m-2"
-        pageClassName="btn btn-sm"
-        breakClassName="btn btn-sm"
-        nextClassName="btn btn-sm"
-        previousClassName="btn btn-sm"
-        breakLabel="..."
-        nextLabel="»"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
-        pageCount={pageCount}
-        previousLabel="«"
-        renderOnZeroPageCount={null}
-      />
-    </>
-  );
+  return <div className="grid h-auto gap-10 grid-cols-1 sm:grid-cols-2">{!lang.isEmpty(products) && <DisplayedProduct products={currentItems} />}</div>;
 }
 
 export default memo(Home);

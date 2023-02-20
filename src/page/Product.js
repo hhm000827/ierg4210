@@ -1,60 +1,48 @@
 import axios from "axios";
 import lang from "lodash/lang";
 import { memo, useEffect, useState } from "react";
-import ReactPaginate from "react-paginate";
 import { useSearchParams } from "react-router-dom";
 import { Card, ProductDetailCard } from "../components/card/Card";
 
 const DisplayedProducts = (props) => {
-  return (
-    <div className="grid h-auto gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {!lang.isEmpty(props.selectedProduct) &&
-        lang.isArray(props.selectedProduct) &&
-        props.selectedProduct.map((product) => (
-          <div key={`$search-${product.name}`}>
-            <Card product={product} />
-          </div>
-        ))}
+  return props.selectedProduct.map((product) => (
+    <div key={`$search-${product.name}`}>
+      <Card product={product} />
     </div>
-  );
-};
-
-const PaginatedItems = (props) => {
-  const itemsPerPage = 6;
-  const [itemOffset, setItemOffset] = useState(0);
-  const endOffset = itemOffset + itemsPerPage;
-  const currentItems = props.items.slice(itemOffset, endOffset);
-  const pageCount = Math.ceil(props.items.length / itemsPerPage);
-
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % props.items.length;
-    setItemOffset(newOffset);
-  };
-
-  return (
-    <>
-      <DisplayedProducts selectedProduct={currentItems} />
-      <ReactPaginate
-        className="btn-group justify-center m-2"
-        pageClassName="btn btn-sm"
-        breakClassName="btn btn-sm"
-        nextClassName="btn btn-sm"
-        previousClassName="btn btn-sm"
-        breakLabel="..."
-        nextLabel="»"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
-        pageCount={pageCount}
-        previousLabel="«"
-        renderOnZeroPageCount={null}
-      />
-    </>
-  );
+  ));
 };
 
 const Product = () => {
   const [searchParams] = useSearchParams();
   const [selectedProduct, setSelectedProduct] = useState();
+  const [itemOffset, setItemOffset] = useState(0);
+  const [currentItems, setCurrentItems] = useState([]);
+  const [hasMore, setHasMore] = useState(false);
+  const itemsPerPage = 6;
+
+  window.onscroll = () => handleScroll();
+
+  function handleScroll() {
+    var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrolled = (winScroll / height) * 100;
+    if (scrolled === 100) loadItems();
+  }
+
+  const loadItems = () => {
+    if (lang.isArray(selectedProduct)) {
+      if (selectedProduct.length < itemsPerPage) {
+        setCurrentItems(selectedProduct);
+        setHasMore(false);
+      } else if (selectedProduct.length > itemOffset * itemsPerPage && hasMore) {
+        setCurrentItems((currentItems) => [...currentItems, ...selectedProduct.slice(itemOffset * itemsPerPage, (itemOffset + 1) * itemsPerPage)]);
+        setItemOffset((itemOffset) => itemOffset + 1);
+      } else if (selectedProduct.length <= itemOffset * itemsPerPage && itemOffset > 0 && hasMore) {
+        setCurrentItems((currentItems) => [...currentItems, ...selectedProduct.slice(itemOffset * itemsPerPage, selectedProduct.length)]);
+        setHasMore(false);
+      }
+    }
+  };
 
   useEffect(() => {
     //determine which card tyoe should use base on the existence of pid
@@ -69,8 +57,18 @@ const Product = () => {
           .catch((e) => console.error(e));
   }, [searchParams]);
 
+  useEffect(() => {
+    setHasMore(true);
+    if (!lang.isEmpty(selectedProduct)) loadItems();
+    // eslint-disable-next-line
+  }, [selectedProduct]);
+
   return lang.isNil(searchParams.get("pid")) ? (
-    !lang.isEmpty(selectedProduct) && lang.isArray(selectedProduct) && <PaginatedItems items={selectedProduct} />
+    !lang.isEmpty(selectedProduct) && lang.isArray(selectedProduct) && (
+      <div className="grid h-auto gap-10 grid-cols-1 sm:grid-cols-2">
+        <DisplayedProducts selectedProduct={currentItems} />
+      </div>
+    )
   ) : (
     <div>{selectedProduct && lang.isObject(selectedProduct) && <ProductDetailCard product={selectedProduct} />}</div>
   );
