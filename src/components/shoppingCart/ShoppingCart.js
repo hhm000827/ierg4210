@@ -52,7 +52,7 @@ const Table = (props) => {
                       min={0}
                       max={item.payload.inventory}
                       ref={(el) => (ref.current[item.payload.name] = el)}
-                      defaultValue={1}
+                      value={item.payload.quantity}
                       onChange={(e) => handleChangeQuantity(item.payload)}
                     />
                   </td>
