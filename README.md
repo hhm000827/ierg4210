@@ -28,7 +28,7 @@ React_App_API= TYPE_YOUR_API_URL_HERE
 
 ## How to Run the project's frontend in phase 3
 
-### Install Node.js
+### Install Node.js (if not yet install)
 
 Download from https://nodejs.org/en/. Version is 18.xx.x LTS (left button)
 
