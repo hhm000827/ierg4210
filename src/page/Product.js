@@ -2,6 +2,7 @@ import axios from "axios";
 import lang from "lodash/lang";
 import { memo, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { RingLoader } from "react-spinners";
 import { Card, ProductDetailCard } from "../components/card/Card";
 
 const DisplayedProducts = (props) => {
@@ -17,34 +18,33 @@ const Product = () => {
   const [selectedProduct, setSelectedProduct] = useState();
   const [itemOffset, setItemOffset] = useState(0);
   const [currentItems, setCurrentItems] = useState([]);
-  const [hasMore, setHasMore] = useState(false);
-  const itemsPerPage = 6;
-
-  window.onscroll = () => handleScroll();
+  const [hasMore, setHasMore] = useState(true);
+  const itemsPerPage = 4;
 
   function handleScroll() {
     var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
     var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     var scrolled = (winScroll / height) * 100;
-    if (scrolled === 100) loadItems();
+    if (scrolled === 90) loadItems();
   }
 
   const loadItems = () => {
-    if (lang.isArray(selectedProduct)) {
+    if (lang.isArray(selectedProduct) && hasMore) {
       if (selectedProduct.length < itemsPerPage) {
         setCurrentItems(selectedProduct);
         setHasMore(false);
-      } else if (selectedProduct.length > itemOffset * itemsPerPage && hasMore) {
-        setCurrentItems((currentItems) => [...currentItems, ...selectedProduct.slice(itemOffset * itemsPerPage, (itemOffset + 1) * itemsPerPage)]);
-        setItemOffset((itemOffset) => itemOffset + 1);
-      } else if (selectedProduct.length <= itemOffset * itemsPerPage && itemOffset > 0 && hasMore) {
-        setCurrentItems((currentItems) => [...currentItems, ...selectedProduct.slice(itemOffset * itemsPerPage, selectedProduct.length)]);
-        setHasMore(false);
+      } else {
+        let items = [...currentItems, ...selectedProduct.slice(itemOffset * itemsPerPage, (itemOffset + 1) * itemsPerPage)];
+        setCurrentItems(items);
+        if (lang.isEqual(items.length, selectedProduct.length)) setHasMore(false);
+        else setItemOffset((itemOffset) => itemOffset + 1);
       }
     }
   };
 
   useEffect(() => {
+    setHasMore(true);
+    setCurrentItems([]);
     //determine which card tyoe should use base on the existence of pid
     lang.isNil(searchParams.get("pid"))
       ? axios
@@ -58,19 +58,25 @@ const Product = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    setHasMore(true);
     if (!lang.isEmpty(selectedProduct)) loadItems();
     // eslint-disable-next-line
   }, [selectedProduct]);
 
+  window.onscroll = () => handleScroll();
+
   return lang.isNil(searchParams.get("pid")) ? (
-    !lang.isEmpty(selectedProduct) && lang.isArray(selectedProduct) && (
-      <div className="grid h-auto gap-10 grid-cols-1 sm:grid-cols-2">
-        <DisplayedProducts selectedProduct={currentItems} />
+    <div id="category-page">
+      {!lang.isEmpty(selectedProduct) && lang.isArray(selectedProduct) && (
+        <div className="grid h-auto gap-10 grid-cols-1 sm:grid-cols-2">
+          <DisplayedProducts selectedProduct={currentItems} />
+        </div>
+      )}
+      <div className="flex justify-center m-7">
+        <RingLoader color="white" loading={hasMore} size={150} aria-label="Loading Spinner" data-testid="loader" />
       </div>
-    )
+    </div>
   ) : (
-    <div>{selectedProduct && lang.isObject(selectedProduct) && <ProductDetailCard product={selectedProduct} />}</div>
+    <div id="product-page">{selectedProduct && lang.isObject(selectedProduct) && <ProductDetailCard product={selectedProduct} />}</div>
   );
 };
 

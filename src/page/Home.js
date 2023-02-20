@@ -1,6 +1,7 @@
 import axios from "axios";
 import lang from "lodash/lang";
 import { memo, useEffect, useState } from "react";
+import { RingLoader } from "react-spinners";
 import { Card } from "../components/card/Card";
 
 const DisplayedProduct = (props) => {
@@ -15,22 +16,19 @@ function Home() {
   const [products, setProducts] = useState([]);
   const [itemOffset, setItemOffset] = useState(0);
   const [currentItems, setCurrentItems] = useState([]);
-  const [hasMore, setHasMore] = useState(false);
-  const itemsPerPage = 6;
-
-  window.onscroll = () => handleScroll();
+  const [hasMore, setHasMore] = useState(true);
+  const itemsPerPage = 4;
 
   const loadItems = () => {
-    if (lang.isArray(products)) {
+    if (lang.isArray(products) && hasMore) {
       if (products.length < itemsPerPage) {
         setCurrentItems(products);
         setHasMore(false);
-      } else if (products.length > itemOffset * itemsPerPage && hasMore) {
-        setCurrentItems([...currentItems, ...products.slice(itemOffset * itemsPerPage, (itemOffset + 1) * itemsPerPage)]);
-        setItemOffset((itemOffset) => itemOffset + 1);
-      } else if (products.length <= itemOffset * itemsPerPage && itemOffset > 0 && hasMore) {
-        setCurrentItems([...currentItems, ...products.slice(itemOffset * itemsPerPage, products.length)]);
-        setHasMore(false);
+      } else {
+        let items = [...currentItems, ...products.slice(itemOffset * itemsPerPage, (itemOffset + 1) * itemsPerPage)];
+        setCurrentItems(items);
+        if (lang.isEqual(items.length, products.length)) setHasMore(false);
+        else setItemOffset((itemOffset) => itemOffset + 1);
       }
     }
   };
@@ -39,7 +37,7 @@ function Home() {
     var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
     var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     var scrolled = (winScroll / height) * 100;
-    if (scrolled === 100) loadItems();
+    if (scrolled >= 90) loadItems();
   }
 
   useEffect(() => {
@@ -49,13 +47,23 @@ function Home() {
       .catch((e) => console.error(e));
   }, []);
 
+  window.onscroll = () => handleScroll();
+
   useEffect(() => {
-    setHasMore(true);
     if (!lang.isEmpty(products)) loadItems();
     // eslint-disable-next-line
   }, [products]);
 
-  return <div className="grid h-auto gap-10 grid-cols-1 sm:grid-cols-2">{!lang.isEmpty(products) && <DisplayedProduct products={currentItems} />}</div>;
+  return (
+    <div>
+      <div className="grid h-auto gap-10 grid-cols-1 sm:grid-cols-2" onScroll={handleScroll}>
+        {!lang.isEmpty(products) && <DisplayedProduct products={currentItems} />}
+      </div>
+      <div className="flex justify-center m-7">
+        <RingLoader color="white" loading={hasMore} size={150} aria-label="Loading Spinner" data-testid="loader" />
+      </div>
+    </div>
+  );
 }
 
 export default memo(Home);
