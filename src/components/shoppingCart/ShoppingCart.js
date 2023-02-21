@@ -17,6 +17,8 @@ const Table = (props) => {
   }, []);
 
   const handleChangeQuantity = (input) => {
+    if (Number(ref.current[input.name].value) > input.inventory) ref.current[input.name].value = input.inventory;
+
     let payload = {
       pid: input.pid,
       name: input.name,
