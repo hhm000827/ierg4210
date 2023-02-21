@@ -11,12 +11,12 @@ import { setIsLogin } from "./LoginSlice";
 const schema = yup
   .object()
   .shape({
-    email: yup
+    email: yup.string().email("must be a valid email").trim().required("email is required"),
+    password: yup
       .string()
-      .email("must be a valid email")
-      .matches(/^[\w%+-.@]*$/, "must be a valid email")
-      .required("email is required"),
-    password: yup.string().min(5, "password is too short - should be 5 chars minimum.").required("password is required"),
+      .matches(/^[^<>]+$/, "empty password or special letters are not allowed: < >")
+      .trim()
+      .required("password is required"),
   })
   .required();
 

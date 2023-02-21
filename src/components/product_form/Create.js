@@ -20,7 +20,8 @@ const schema = yup
   .shape({
     name: yup
       .string()
-      .matches(/^[A-Za-z0-9 ]*$/, "not allow special letter in name")
+      .matches(/^[\w ]*$/, "not allow special letter in name")
+      .trim()
       .required("name is required"),
     cid: yup
       .object()
@@ -35,6 +36,7 @@ const schema = yup
     description: yup
       .string()
       .matches(/^[\w,. ]*$/, "not allow special letter in description")
+      .trim()
       .required("description is required"),
   })
   .required();

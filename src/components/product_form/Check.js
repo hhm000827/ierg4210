@@ -24,7 +24,8 @@ const schema = yup
   .shape({
     name: yup
       .string()
-      .matches(/^[A-Za-z0-9 ]*$/, "not allow special letter in name")
+      .matches(/^[\w ]*$/, "not allow special letter in name")
+      .trim()
       .required("name is required"),
     cid: yup
       .object()
@@ -39,6 +40,7 @@ const schema = yup
     description: yup
       .string()
       .matches(/^[\w,. ]*$/, "not allow special letter in description")
+      .trim()
       .required("description is required"),
   })
   .required();
@@ -80,7 +82,8 @@ const Check = () => {
     data["pid"] = selectedProduct.pid;
     data["img"] = selectedProduct.img;
     data["oldName"] = selectedProduct.name;
-    if (!lang.isNil(file) || !lang.isNaN(file) || file.size > 0) data["file"] = file;
+    if (!lang.isNil(file)) data["file"] = file;
+
     let formData = new FormData();
     for (let key in data) formData.append(key, data[key]);
 

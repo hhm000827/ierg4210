@@ -9,16 +9,18 @@ import * as yup from "yup";
 const schema = yup
   .object()
   .shape({
-    email: yup
+    email: yup.string().email("must be a valid email").trim().required("email is required"),
+    password: yup
       .string()
-      .email("must be a valid email")
-      .matches(/^[\w%+-.@]*$/, "must be a valid email")
-      .required("email is required"),
-    password: yup.string().required("password is required"),
+      .matches(/^[^<>]+$/, "empty password or special letters are not allowed: < >")
+      .trim()
+      .required("password is required"),
     newPassword: yup
       .string()
-      .min(5, "password is too short - should be 8 chars minimum.")
+      .min(5, "password is too short - should be 5 chars minimum.")
+      .matches(/^[^<>]+$/, "empty password or special letters are not allowed: < >")
       .notOneOf([yup.ref("password"), null], "New Password must not same as old password")
+      .trim()
       .required("new password is required"),
   })
   .required();
