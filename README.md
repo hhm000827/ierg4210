@@ -54,6 +54,9 @@ If you want to not visit/visit admin panel, then please login in:
 | admin@admin.com | admin | admin |
 | user@user.com | user1234 | user |
 
+All shopping cart items will be stored in redux instead of the local storage due to the framework.
+JWT token will be stored in session storage instead of cookie due to its property and security-policy.
+
 ## How to deploying frontend in AWS EC2
 
 ### `npm run build`
