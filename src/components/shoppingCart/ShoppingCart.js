@@ -70,7 +70,7 @@ const Table = (props) => {
       </div>
     </div>
   ) : (
-    <p>Add something into Cart</p>
+    <p className="text-white">Add something into Cart</p>
   );
 };
 

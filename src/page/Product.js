@@ -22,10 +22,9 @@ const Product = () => {
   const itemsPerPage = 4;
 
   function handleScroll() {
-    var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    var scrolled = (winScroll / height) * 100;
-    if (scrolled === 90) loadItems();
+    let home = document.querySelector("#category-page");
+    var scrolled = (home.scrollTop / (home.scrollHeight - home.clientHeight)) * 100;
+    if (scrolled >= 100) loadItems();
   }
 
   const loadItems = () => {
@@ -62,10 +61,8 @@ const Product = () => {
     // eslint-disable-next-line
   }, [selectedProduct]);
 
-  window.onscroll = () => handleScroll();
-
   return lang.isNil(searchParams.get("pid")) ? (
-    <div id="category-page">
+    <div id="category-page" className="overflow-y-auto h-[600px]" onScroll={handleScroll}>
       {!lang.isEmpty(selectedProduct) && lang.isArray(selectedProduct) && (
         <div className="grid h-auto gap-10 grid-cols-1 sm:grid-cols-2">
           <DisplayedProducts selectedProduct={currentItems} />

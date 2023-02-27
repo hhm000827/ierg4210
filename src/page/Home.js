@@ -34,10 +34,9 @@ function Home() {
   };
 
   function handleScroll() {
-    var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    var scrolled = (winScroll / height) * 100;
-    if (scrolled >= 90) loadItems();
+    let home = document.querySelector("#home-page");
+    var scrolled = (home.scrollTop / (home.scrollHeight - home.clientHeight)) * 100;
+    if (scrolled >= 100) loadItems();
   }
 
   useEffect(() => {
@@ -47,18 +46,14 @@ function Home() {
       .catch((e) => console.error(e));
   }, []);
 
-  window.onscroll = () => handleScroll();
-
   useEffect(() => {
     if (!lang.isEmpty(products)) loadItems();
     // eslint-disable-next-line
   }, [products]);
 
   return (
-    <div>
-      <div className="grid h-auto gap-10 grid-cols-1 sm:grid-cols-2" onScroll={handleScroll}>
-        {!lang.isEmpty(products) && <DisplayedProduct products={currentItems} />}
-      </div>
+    <div id="home-page" className="overflow-y-auto h-[600px]" onScroll={handleScroll}>
+      <div className="grid h-auto gap-10 grid-cols-1 sm:grid-cols-2">{!lang.isEmpty(products) && <DisplayedProduct products={currentItems} />}</div>
       <div className="flex justify-center m-7">
         <RingLoader color="white" loading={hasMore} size={150} aria-label="Loading Spinner" data-testid="loader" />
       </div>
