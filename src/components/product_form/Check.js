@@ -88,7 +88,7 @@ const Check = () => {
     for (let key in data) formData.append(key, data[key]);
 
     axios
-      .put(`${process.env.React_App_API}/api/updateProduct`, formData, { headers: { "Content-Type": "multipart/form-data", Authorization: sessionStorage.getItem("auth") } })
+      .put(`${process.env.React_App_API}/api/updateProduct`, formData, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })
       .then((res) => {
         toast.success(res.data);
         setUploadedFile(null);
@@ -112,9 +112,7 @@ const Check = () => {
       method: "delete",
       url: `${process.env.React_App_API}/api/deleteProduct`,
       data: { pid: pid, img: img },
-      headers: {
-        Authorization: sessionStorage.getItem("auth"),
-      },
+      withCredentials: true,
     })
       .then((res) => {
         toast.success(res.data);

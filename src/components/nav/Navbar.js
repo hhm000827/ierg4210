@@ -13,11 +13,7 @@ const Navbar = () => {
   useEffect(() => {
     const verify = async () => {
       await axios
-        .get(`${process.env.React_App_API}/api/verify`, {
-          headers: {
-            Authorization: sessionStorage.getItem("auth"),
-          },
-        })
+        .get(`${process.env.React_App_API}/api/verify`, { withCredentials: true })
         .then((res) => {
           if (lang.isEqual(res.data, true)) setIsAdmin(res.data);
         })
@@ -29,11 +25,7 @@ const Navbar = () => {
 
   window.addEventListener("storage", () => {
     axios
-      .get(`${process.env.React_App_API}/api/verify`, {
-        headers: {
-          Authorization: sessionStorage.getItem("auth"),
-        },
-      })
+      .get(`${process.env.React_App_API}/api/verify`, { withCredentials: true })
       .then((res) => {
         if (lang.isEqual(res.data, true)) setIsAdmin(res.data);
       })

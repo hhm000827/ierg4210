@@ -12,11 +12,7 @@ const AdminPanelLayout = () => {
   useEffect(() => {
     const verify = async () => {
       await axios
-        .get(`${process.env.React_App_API}/api/verify`, {
-          headers: {
-            Authorization: sessionStorage.getItem("auth"),
-          },
-        })
+        .get(`${process.env.React_App_API}/api/verify`, { withCredentials: true })
         .then((res) => {
           lang.isEqual(res.data, true) ? setIsAdmin(res.data) : setIsAdmin(res.false);
         })

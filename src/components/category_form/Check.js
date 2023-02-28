@@ -47,11 +47,7 @@ const Check = () => {
     data["cid"] = cid;
 
     axios
-      .put(`${process.env.React_App_API}/api/updateCategory`, data, {
-        headers: {
-          Authorization: sessionStorage.getItem("auth"),
-        },
-      })
+      .put(`${process.env.React_App_API}/api/updateCategory`, data, { withCredentials: true })
       .then((res) => {
         toast.success(res.data);
         setTimeout(() => navigate(0), 1000);
@@ -65,14 +61,7 @@ const Check = () => {
 
   const handleDelete = (cid) => {
     dispatch(changeAdminAction(deleteAction));
-    axios({
-      method: "delete",
-      url: `${process.env.React_App_API}/api/deleteCategory`,
-      data: { cid: cid },
-      headers: {
-        Authorization: sessionStorage.getItem("auth"),
-      },
-    })
+    axios({ method: "delete", url: `${process.env.React_App_API}/api/deleteCategory`, data: { cid: cid }, withCredentials: true })
       .then((res) => {
         toast.success(res.data);
         setTimeout(() => navigate(0), 1000);
