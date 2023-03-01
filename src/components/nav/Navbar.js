@@ -58,7 +58,6 @@ const Navbar = () => {
                 onClick={(e) => {
                   dispatch({ type: "logout" });
                   setIsAdmin(false);
-                  window.location.assign("/");
                 }}
               >
                 Logout

@@ -33,7 +33,7 @@ const LoginForm = () => {
 
   const onSubmit = (data) => {
     axios
-      .post(`${process.env.React_App_API}/api/login`, data)
+      .post(`${process.env.React_App_API}/api/login`, data, { withCredentials: true })
       .then((res) => {
         reset();
         document.getElementById("loginForm").checked = false;

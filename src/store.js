@@ -1,4 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import axios from "axios";
 import lang from "lodash/lang";
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -32,6 +33,7 @@ const rootReducer = (state, action) => {
     state = undefined;
     localStorage.removeItem("persist:shoppingCart");
     localStorage.removeItem("persist:isLogin");
+    axios.get(`${process.env.React_App_API}/api/logout`, { withCredentials: true }).then(() => window.location.assign("/"));
   }
   return combinedReducers(state, action);
 };
