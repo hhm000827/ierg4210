@@ -1,7 +1,7 @@
-import axios from "axios";
 import lang from "lodash/lang";
 import { memo, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
+import { Axios } from "../../components/axios/Axios";
 import Footer from "../../components/footer/Footer";
 import Menu from "../../components/nav/Menu";
 import Navbar from "../../components/nav/Navbar";
@@ -11,8 +11,7 @@ const AdminPanelLayout = () => {
 
   useEffect(() => {
     const verify = async () => {
-      await axios
-        .get(`${process.env.React_App_API}/api/verify`, { withCredentials: true })
+      await Axios.get(`/api/verify`)
         .then((res) => {
           lang.isEqual(res.data, true) ? setIsAdmin(res.data) : setIsAdmin(res.false);
         })

@@ -1,8 +1,8 @@
-import axios from "axios";
 import lang from "lodash/lang";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { Axios } from "../axios/Axios";
 import ShoppingCart from "../shoppingCart/ShoppingCart";
 
 const Navbar = () => {
@@ -12,8 +12,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const verify = async () => {
-      await axios
-        .get(`${process.env.React_App_API}/api/verify`, { withCredentials: true })
+      await Axios.get(`/api/verify`)
         .then((res) => {
           if (lang.isEqual(res.data, true)) setIsAdmin(res.data);
         })
@@ -24,8 +23,7 @@ const Navbar = () => {
   }, []);
 
   window.addEventListener("storage", () => {
-    axios
-      .get(`${process.env.React_App_API}/api/verify`, { withCredentials: true })
+    Axios.get(`/api/verify`)
       .then((res) => {
         if (lang.isEqual(res.data, true)) setIsAdmin(res.data);
       })

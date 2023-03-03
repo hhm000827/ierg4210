@@ -1,11 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
-import { getCSRFToken } from "../csrf/Csrf";
+import { Axios } from "../axios/Axios";
 
 import { setIsLogin } from "./LoginSlice";
 
@@ -33,8 +32,7 @@ const LoginForm = () => {
   });
 
   const onSubmit = (data) => {
-    axios
-      .post(`${process.env.React_App_API}/api/login`, data, { withCredentials: true })
+    Axios.post(`/api/login`, data)
       .then((res) => {
         reset();
         document.getElementById("loginForm").checked = false;
@@ -48,15 +46,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <input
-        type="checkbox"
-        id="loginForm"
-        className="modal-toggle"
-        onClick={() => {
-          if (document.getElementById("loginForm").checked === true) getCSRFToken();
-          reset();
-        }}
-      />
+      <input type="checkbox" id="loginForm" className="modal-toggle" onClick={() => reset()} />
       <label htmlFor="loginForm" className="modal cursor-pointer">
         <label className="modal-box relative" htmlFor="">
           <label htmlFor="loginForm" className="btn btn-sm btn-circle btn-error absolute right-2 top-2">

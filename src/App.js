@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import { getCSRFToken } from "./components/axios/Axios";
 import LoginForm from "./components/login/LoginForm";
 import PasswordForm from "./components/login/PasswordForm";
 import AdminPanelLayout from "./page/admin_page/AdminPanelLayout";
@@ -14,6 +16,9 @@ import NoPage from "./page/NoPage";
 import Product from "./page/Product";
 
 function App() {
+  useEffect(() => {
+    getCSRFToken();
+  }, []);
   return (
     <div className="App">
       <Toaster />

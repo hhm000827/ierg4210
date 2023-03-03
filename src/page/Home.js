@@ -1,7 +1,7 @@
-import axios from "axios";
 import lang from "lodash/lang";
 import { memo, useEffect, useState } from "react";
 import { RingLoader } from "react-spinners";
+import { Axios } from "../components/axios/Axios";
 import { Card } from "../components/card/Card";
 
 const DisplayedProduct = (props) => {
@@ -40,8 +40,7 @@ function Home() {
   }
 
   useEffect(() => {
-    axios
-      .get(`${process.env.React_App_API}/api/getAllProduct`)
+    Axios.get(`/api/getAllProduct`)
       .then((res) => setProducts(res.data))
       .catch((e) => console.error(e));
   }, []);

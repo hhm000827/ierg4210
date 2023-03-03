@@ -1,5 +1,4 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import lang from "lodash/lang";
 import { memo, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -8,6 +7,7 @@ import { useDispatch } from "react-redux";
 import Select from "react-select";
 import * as yup from "yup";
 import { changeAdminAction } from "../../page/admin_page/AdminActionSlice";
+import { Axios } from "../axios/Axios";
 
 let submitAction = "submit create product form";
 let createAction = "create product";
@@ -76,8 +76,7 @@ const Create = () => {
       let formData = new FormData();
       for (let key in data) formData.append(key, data[key]);
 
-      axios
-        .post(`${process.env.React_App_API}/api/createProduct`, formData, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })
+      Axios.post(`/api/createProduct`, formData, { headers: { "Content-Type": "multipart/form-data" } })
         .then((res) => {
           toast.success(res.data);
           setUploadedFile(null);
@@ -98,8 +97,7 @@ const Create = () => {
 
   useEffect(() => {
     dispatch(changeAdminAction(createAction));
-    axios
-      .get(`${process.env.React_App_API}/api/getAllCategory?dropdown=true`)
+    Axios.get(`/api/getAllCategory?dropdown=true`)
       .then((res) => setCategories(res.data))
       .catch((err) => toast.error(err.response.data));
     // eslint-disable-next-line

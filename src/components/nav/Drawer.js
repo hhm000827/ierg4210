@@ -1,14 +1,13 @@
-import axios from "axios";
 import lang from "lodash/lang";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Axios } from "../axios/Axios";
 
 const Drawer = () => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.React_App_API}/api/getAllCategory`)
+    Axios.get(`/api/getAllCategory`)
       .then((res) => setCategories(res.data))
       .catch((e) => console.error(e));
   }, []);

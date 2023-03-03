@@ -1,10 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
+import { Axios } from "../axios/Axios";
 
 const schema = yup
   .object()
@@ -37,8 +37,7 @@ const PasswordForm = () => {
   });
 
   const onSubmit = (data) => {
-    axios
-      .post(`${process.env.React_App_API}/api/changePassword`, data)
+    Axios.post(`/api/changePassword`, data)
       .then((res) => {
         reset();
         document.getElementById("passwordForm").checked = false;

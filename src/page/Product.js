@@ -1,8 +1,8 @@
-import axios from "axios";
 import lang from "lodash/lang";
 import { memo, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { RingLoader } from "react-spinners";
+import { Axios } from "../components/axios/Axios";
 import { Card, ProductDetailCard } from "../components/card/Card";
 
 const DisplayedProducts = (props) => {
@@ -46,12 +46,10 @@ const Product = () => {
     setCurrentItems([]);
     //determine which card tyoe should use base on the existence of pid
     lang.isNil(searchParams.get("pid"))
-      ? axios
-          .get(`${process.env.React_App_API}/api/getFilteredProducts?cid=${Number(searchParams.get("cid"))}`)
+      ? Axios.get(`/api/getFilteredProducts?cid=${Number(searchParams.get("cid"))}`)
           .then((res) => setSelectedProduct(res.data))
           .catch((e) => console.error(e))
-      : axios
-          .get(`${process.env.React_App_API}/api/getFilteredProducts?pid=${Number(searchParams.get("pid"))}`)
+      : Axios.get(`/api/getFilteredProducts?pid=${Number(searchParams.get("pid"))}`)
           .then((res) => setSelectedProduct(res.data))
           .catch((e) => console.error(e));
   }, [searchParams]);

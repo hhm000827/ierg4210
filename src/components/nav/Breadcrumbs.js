@@ -1,7 +1,7 @@
-import axios from "axios";
 import lang from "lodash/lang";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { Axios } from "../axios/Axios";
 
 const Breadcrumbs = () => {
   const [searchParams] = useSearchParams();
@@ -10,14 +10,12 @@ const Breadcrumbs = () => {
 
   useEffect(() => {
     if (!lang.isNil(searchParams.get("pid")))
-      axios
-        .get(`${process.env.React_App_API}/api/getFilteredProducts?pid=${Number(searchParams.get("pid"))}`)
+      Axios.get(`/api/getFilteredProducts?pid=${Number(searchParams.get("pid"))}`)
         .then((res) => setProduct(res.data))
         .catch((e) => console.error(e));
 
     if (!lang.isNil(searchParams.get("cid")))
-      axios
-        .get(`${process.env.React_App_API}/api/getAllCategory`)
+      Axios.get(`/api/getAllCategory`)
         .then((res) => setCategory(res.data.find((item) => lang.isEqual(Number(searchParams.get("cid")), item.cid))))
         .catch((e) => console.error(e));
   }, [searchParams]);

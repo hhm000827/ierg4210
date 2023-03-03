@@ -1,5 +1,4 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import lang from "lodash/lang";
 import { memo, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -9,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import * as yup from "yup";
 import { changeAdminAction } from "../../page/admin_page/AdminActionSlice";
+import { Axios } from "../axios/Axios";
 
 let modifyAction = "modify product";
 let checkAction = "check product";
@@ -87,8 +87,7 @@ const Check = () => {
     let formData = new FormData();
     for (let key in data) formData.append(key, data[key]);
 
-    axios
-      .put(`${process.env.React_App_API}/api/updateProduct`, formData, { headers: { "Content-Type": "multipart/form-data" }, withCredentials: true })
+    Axios.put(`/api/updateProduct`, formData, { headers: { "Content-Type": "multipart/form-data" } })
       .then((res) => {
         toast.success(res.data);
         setUploadedFile(null);
@@ -108,11 +107,10 @@ const Check = () => {
 
   const handleDelete = (pid, img) => {
     dispatch(changeAdminAction(deleteAction));
-    axios({
+    Axios({
       method: "delete",
-      url: `${process.env.React_App_API}/api/deleteProduct`,
+      url: `/api/deleteProduct`,
       data: { pid: pid, img: img },
-      withCredentials: true,
     })
       .then((res) => {
         toast.success(res.data);
@@ -127,8 +125,7 @@ const Check = () => {
     setFileError(null);
     setFileDataURL(null);
     if (!lang.isNil(product))
-      axios
-        .get(`${process.env.React_App_API}/api/getFilteredProducts?pid=${product.value}`)
+      Axios.get(`/api/getFilteredProducts?pid=${product.value}`)
         .then((res) => setSelectedProduct(res.data))
         .catch((e) => console.error(e));
     else setSelectedProduct(null);
@@ -137,12 +134,10 @@ const Check = () => {
 
   useEffect(() => {
     dispatch(changeAdminAction(checkAction));
-    axios
-      .get(`${process.env.React_App_API}/api/getAllProductNameAndPid`)
+    Axios.get(`/api/getAllProductNameAndPid`)
       .then((res) => setProducts(res.data))
       .catch((e) => console.error(e));
-    axios
-      .get(`${process.env.React_App_API}/api/getAllCategory?dropdown=true`)
+    Axios.get(`/api/getAllCategory?dropdown=true`)
       .then((res) => setCategories(res.data))
       .catch((e) => console.error(e));
     // eslint-disable-next-line

@@ -1,5 +1,4 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import lang from "lodash/lang";
 import { memo, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -9,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import * as yup from "yup";
 import { changeAdminAction } from "../../page/admin_page/AdminActionSlice";
+import { Axios } from "../axios/Axios";
 
 let modifyAction = "modify category";
 let checkAction = "check category";
@@ -46,8 +46,7 @@ const Check = () => {
     dispatch(changeAdminAction(submitAction));
     data["cid"] = cid;
 
-    axios
-      .put(`${process.env.React_App_API}/api/updateCategory`, data, { withCredentials: true })
+    Axios.put("/api/updateCategory", data)
       .then((res) => {
         toast.success(res.data);
         setTimeout(() => navigate(0), 1000);
@@ -61,7 +60,7 @@ const Check = () => {
 
   const handleDelete = (cid) => {
     dispatch(changeAdminAction(deleteAction));
-    axios({ method: "delete", url: `${process.env.React_App_API}/api/deleteCategory`, data: { cid: cid }, withCredentials: true })
+    Axios({ method: "delete", url: "/api/deleteCategory", data: { cid: cid } })
       .then((res) => {
         toast.success(res.data);
         setTimeout(() => navigate(0), 1000);
@@ -77,8 +76,7 @@ const Check = () => {
 
   useEffect(() => {
     dispatch(changeAdminAction(checkAction));
-    axios
-      .get(`${process.env.React_App_API}/api/getAllCategory?dropdown=true`)
+    Axios.get("/api/getAllCategory?dropdown=true")
       .then((res) => setCategories(res.data))
       .catch((e) => console.error(e));
     // eslint-disable-next-line

@@ -1,11 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import { memo, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import { changeAdminAction } from "../../page/admin_page/AdminActionSlice";
+import { Axios } from "../axios/Axios";
 
 let submitAction = "submit create category form";
 let createAction = "create category";
@@ -36,8 +36,7 @@ const Create = () => {
   const onSubmit = (data) => {
     dispatch(changeAdminAction(submitAction));
 
-    axios
-      .post(`${process.env.React_App_API}/api/createCategory`, data, { withCredentials: true })
+    Axios.post(`/api/createCategory`, data)
       .then((res) => toast.success(res.data))
       .catch((err) => toast.error(err.response.data));
     reset();
