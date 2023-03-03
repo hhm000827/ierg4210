@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
+import { getCSRFToken } from "../csrf/Csrf";
 
 import { setIsLogin } from "./LoginSlice";
 
@@ -47,7 +48,15 @@ const LoginForm = () => {
 
   return (
     <>
-      <input type="checkbox" id="loginForm" className="modal-toggle" onClick={() => reset()} />
+      <input
+        type="checkbox"
+        id="loginForm"
+        className="modal-toggle"
+        onClick={() => {
+          if (document.getElementById("loginForm").checked === true) getCSRFToken();
+          reset();
+        }}
+      />
       <label htmlFor="loginForm" className="modal cursor-pointer">
         <label className="modal-box relative" htmlFor="">
           <label htmlFor="loginForm" className="btn btn-sm btn-circle btn-error absolute right-2 top-2">
