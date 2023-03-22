@@ -18,7 +18,7 @@ React-router-dom
 
 ## Form validation
 
-Yup + react-hook-form
+Yup + react-hook-form: prevent XSS with frontend validation
 
 ## Environment Management
 
