@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <PayPalScriptProvider options={{ "client-id": process.env.React_App_PayPal_Client_ID, currency: "HKD" }}>
+      <PayPalScriptProvider options={{ "client-id": process.env.React_App_PayPal_Client_ID }}>
         <BrowserRouter>
           <App />
         </BrowserRouter>

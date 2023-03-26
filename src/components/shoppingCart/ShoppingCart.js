@@ -1,11 +1,16 @@
 import lang from "lodash/lang";
 import math from "lodash/math";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import PaypalButtonWrapper from "../paypal/PaypalAction";
+import { changeAction } from "../paypal/PaypalActionSlice";
 import { changeQuantity } from "./ShoppingCartSlice";
 
 const Table = (props) => {
   const shoppingCart = useSelector((state) => state.shoppingCart.value);
+  const paypalAction = useSelector((state) => state.paypalAction.value);
+  const isLogin = useSelector((state) => state.isLogin.value);
   const dispatch = useDispatch();
   const ref = useRef({});
 
@@ -30,6 +35,8 @@ const Table = (props) => {
 
     dispatch(changeQuantity(payload));
   };
+
+  const onClickCheckoutButton = () => (isLogin ? dispatch(changeAction({ showPayPalButton: true })) : toast.error("You need to login before checkout"));
 
   return !lang.isEmpty(shoppingCart) ? (
     <div className="flex flex-col">
@@ -66,8 +73,11 @@ const Table = (props) => {
         </table>
       </div>
       <div className="flex justify-end">
-        <button className="btn btn-xs btn-info">checkout</button>
+        <button className="btn btn-xs btn-info mb-2" onClick={onClickCheckoutButton}>
+          checkout
+        </button>
       </div>
+      {paypalAction.showPayPalButton && <PaypalButtonWrapper />}
     </div>
   ) : (
     <p className="text-white">Add something into Cart</p>

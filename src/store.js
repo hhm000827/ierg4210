@@ -6,6 +6,7 @@ import { Axios } from "./components/axios/Axios";
 import LoginReducer from "./components/login/LoginSlice";
 import shoppingCartReducer from "./components/shoppingCart/ShoppingCartSlice";
 import AdminActionReducer from "./page/admin_page/AdminActionSlice";
+import paypalActionReducer from "./components/paypal/PaypalActionSlice";
 
 const persistConfigForShoppingCart = {
   key: "shoppingCart",
@@ -25,6 +26,7 @@ const persistedLoginReducer = persistReducer(persistConfigForLogin, LoginReducer
 const combinedReducers = combineReducers({
   shoppingCart: persistedShoppingCartReducer,
   adminAction: AdminActionReducer,
+  paypalAction: paypalActionReducer,
   isLogin: persistedLoginReducer,
 });
 

@@ -18,10 +18,14 @@ export const shoppingCartSlice = createSlice({
       state.value.splice(index, 1, payload);
       array.remove(state.value, (item) => lang.lte(item.payload.quantity, 0));
     },
+    clearCart: (state, payload) => {
+      localStorage.removeItem("persist:shoppingCart");
+      state.value = [];
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addToCart, removeFromCart, changeQuantity } = shoppingCartSlice.actions;
+export const { addToCart, removeFromCart, changeQuantity, clearCart } = shoppingCartSlice.actions;
 
 export default shoppingCartSlice.reducer;
