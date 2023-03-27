@@ -6,6 +6,7 @@ import { getCSRFToken } from "./components/axios/Axios";
 import LoginForm from "./components/login/LoginForm";
 import PasswordForm from "./components/login/PasswordForm";
 import AdminPanelLayout from "./page/admin_page/AdminPanelLayout";
+import AdminRecord from "./page/admin_page/AdminRecord";
 import CheckCategory from "./page/admin_page/CheckCategory";
 import CheckProduct from "./page/admin_page/CheckProduct";
 import CreateCategory from "./page/admin_page/CreateCategory";
@@ -35,6 +36,7 @@ function App() {
           <Route path="CheckProduct" element={<CheckProduct />} />
           <Route path="CreateCategory" element={<CreateCategory />} />
           <Route path="CheckCategory" element={<CheckCategory />} />
+          <Route path="Record" element={<AdminRecord />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
