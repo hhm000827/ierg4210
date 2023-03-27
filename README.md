@@ -30,7 +30,7 @@ In order to use different API for different environment(development, production)
 
 React_App_API= TYPE_YOUR_API_URL_HERE
 
-## How to Run the project's frontend in phase 4
+## How to Run the project's frontend in phase 5
 
 ### Install Node.js (if not yet install)
 
@@ -48,7 +48,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-## Remainder of phase 4's frontend
+## Remainder of phase 5's frontend
 
 If using `npm start` to view the page, then in order to get data from DB, turning on backend server is necessary. Please visit ierg4210_server folder and read its README.MD to turn on the server.
 
