@@ -14,6 +14,7 @@ import Home from "./page/Home";
 import Layout from "./page/Layout";
 import NoPage from "./page/NoPage";
 import Product from "./page/Product";
+import Record from "./page/Record";
 
 function App() {
   useEffect(() => {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="Search" element={<Product />} />
+          <Route path="Record" element={<Record />} />
           <Route path="*" element={<NoPage />} />
         </Route>
         <Route path="/AdminPanel" element={<AdminPanelLayout />}>

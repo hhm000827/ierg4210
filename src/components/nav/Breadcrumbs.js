@@ -26,6 +26,11 @@ const Breadcrumbs = () => {
         <li>
           <Link to="/">Home</Link>
         </li>
+        {lang.isEqual(window.location.pathname, "/Record") && (
+          <li>
+            <Link to="/Record">Record</Link>
+          </li>
+        )}
         {!lang.isNil(searchParams.get("cid")) && lang.isNil(searchParams.get("pid")) && category && (
           <li>
             <Link to={`/Search?cid=${searchParams.get("cid")}`}>{category.name}</Link>

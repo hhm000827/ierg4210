@@ -67,7 +67,9 @@ const Navbar = () => {
               </label>
             </li>
             <li>
-              <button className={`${!isLogin.isLogin && "hidden disabled"}`}>Record</button>
+              <Link to="/Record" className={`${!isLogin.isLogin && "hidden disabled"}`}>
+                Record
+              </Link>
             </li>
           </ul>
         </div>
