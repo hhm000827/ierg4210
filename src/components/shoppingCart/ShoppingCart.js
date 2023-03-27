@@ -16,7 +16,7 @@ const Table = (props) => {
 
   useEffect(() => {
     shoppingCart.map((item) => {
-      return (ref.current[item.payload.name].value = null);
+      return (ref.current[item.name].value = null);
     });
     // eslint-disable-next-line
   }, []);
@@ -53,19 +53,12 @@ const Table = (props) => {
           <tbody>
             {shoppingCart.map((item) => {
               return (
-                <tr key={item.payload.pid}>
-                  <td>{item.payload.name}</td>
+                <tr key={item.pid}>
+                  <td>{item.name}</td>
                   <td>
-                    <input
-                      type="number"
-                      min={0}
-                      max={item.payload.inventory}
-                      ref={(el) => (ref.current[item.payload.name] = el)}
-                      value={item.payload.quantity}
-                      onChange={(e) => handleChangeQuantity(item.payload)}
-                    />
+                    <input type="number" min={0} max={item.inventory} ref={(el) => (ref.current[item.name] = el)} value={item.quantity} onChange={(e) => handleChangeQuantity(item)} />
                   </td>
-                  <td>@$ {item.payload.subtotal}</td>
+                  <td>@$ {item.subtotal}</td>
                 </tr>
               );
             })}
@@ -90,7 +83,7 @@ const ShoppingCart = () => {
 
   //calculate total money
   useEffect(() => {
-    lang.isEmpty(shoppingCart) ? setTotalMoney(0) : setTotalMoney(math.sumBy(shoppingCart, "payload.subtotal"));
+    lang.isEmpty(shoppingCart) ? setTotalMoney(0) : setTotalMoney(math.sumBy(shoppingCart, "subtotal"));
   }, [shoppingCart]);
 
   return (

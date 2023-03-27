@@ -14,7 +14,7 @@ const PaypalButtonWrapper = () => {
   const dispatch = useDispatch();
 
   const createOrder = async (data, actions) => {
-    let totalPrice = math.sumBy(shoppingCart, "payload.subtotal");
+    let totalPrice = math.sumBy(shoppingCart, "subtotal");
     let currency = "USD";
     const response = await Axios.post(`/api/createCustomId`, { shoppingCart: JSON.stringify(shoppingCart), totalPrice: totalPrice, currency: currency });
     return actions.order
@@ -30,7 +30,7 @@ const PaypalButtonWrapper = () => {
         invoice_id: uuidv4(),
         custom_id: response.data.digest,
         items: shoppingCart.map((item) => {
-          return { name: item.payload.name, quantity: item.payload.quantity.toString(), unit_amount: { value: item.payload.price } };
+          return { name: item.name, quantity: item.quantity.toString(), unit_amount: { value: item.price } };
         }),
       })
       .then((orderID) => {

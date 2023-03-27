@@ -12,7 +12,7 @@ const Card = React.memo((props) => {
 
   const clickButton = (product) => {
     //use index to check if exists in cart when cart is not empty
-    if (array.findIndex(shoppingCart, (o) => lang.isEqual(o.payload.pid, product.pid)) !== -1 && !lang.isEmpty(shoppingCart)) {
+    if (array.findIndex(shoppingCart, (o) => lang.isEqual(o.pid, product.pid)) !== -1 && !lang.isEmpty(shoppingCart)) {
       toast.error("Product is existed in shopping cart");
       return;
     }
@@ -62,7 +62,7 @@ const ProductDetailCard = React.memo((props) => {
 
   const clickButton = (product) => {
     //use index to check if exists in cart when cart is not empty
-    if (array.findIndex(shoppingCart, (o) => lang.isEqual(o.payload.pid, product.pid)) !== -1 && !lang.isEmpty(shoppingCart)) {
+    if (array.findIndex(shoppingCart, (o) => lang.isEqual(o.pid, product.pid)) !== -1 && !lang.isEmpty(shoppingCart)) {
       toast.error("Product is existed in shopping cart");
       return;
     }
