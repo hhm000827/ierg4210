@@ -1,18 +1,24 @@
 import { memo, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { Axios } from "../components/axios/Axios";
 
 function Record() {
   const [records, setRecords] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     Axios.get(`/api/getUserRecord`)
       .then((res) => {
-        let data = res.data.map((item) => {
-          return { records: JSON.parse(item.record), products: JSON.parse(item.products) };
-        });
-        console.log(data);
-        setRecords(data);
+        if (!res.data) navigate("/", { replace: true });
+        else {
+          let data = res.data.map((item) => {
+            return { records: JSON.parse(item.record), products: JSON.parse(item.products) };
+          });
+          setRecords(data);
+        }
       })
-      .catch((e) => console.error(e));
+      .catch((e) => toast.error(e.response.data));
   }, []);
 
   return (
