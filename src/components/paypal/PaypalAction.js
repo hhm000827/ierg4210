@@ -33,43 +33,31 @@ const PaypalButtonWrapper = () => {
           return { name: item.name, quantity: item.quantity.toString(), unit_amount: { value: item.price } };
         }),
       })
-      .then((orderID) => {
-        dispatch(changeAction({ orderID: orderID }));
-        return orderID;
-      });
+      .then((orderID) => orderID);
   };
 
   const onApprove = (data, actions) => {
     return actions.order.capture().then(function (details) {
       Axios.post(`/api/storeRecord`, { shoppingCart: JSON.stringify(shoppingCart), record: JSON.stringify(details) })
-        .then((res) => {
-          dispatch(changeAction({ checkoutSuccess: true }));
-        })
+        .then((res) => dispatch(changeAction({ checkoutSuccess: true })))
         .catch((err) => err.response.data);
     });
   };
 
-  const onPaypalError = (data, actions) => dispatch(changeAction({ errorMessage: "An Error occured with your payment" }));
+  const onPaypalError = (data, actions) => {
+    dispatch(changeAction({ checkoutSuccess: false, showPayPalButton: false }));
+    toast.error("An Error occurred with your payment");
+  };
 
   useEffect(
     () => {
       if (paypalAction.checkoutSuccess) {
         dispatch(clearCart());
-        toast.success("Order successful. Please check in Record Page");
+        toast.success("Order successful. Please check in Record Page", { className: "text-sm" });
         dispatch(changeAction({ checkoutSuccess: false, showPayPalButton: false }));
       }
     }, // eslint-disable-next-line
-    [paypalAction.checkoutSuccess, paypalAction.orderID]
-  );
-
-  useEffect(
-    () => {
-      if (paypalAction.errorMessage !== "") {
-        toast.error(paypalAction.errorMessage);
-        dispatch(changeAction({ checkoutSuccess: false, showPayPalButton: false }));
-      }
-    }, // eslint-disable-next-line
-    [paypalAction.errorMessage]
+    [paypalAction.checkoutSuccess]
   );
 
   return <PayPalButtons style={{ layout: "horizontal" }} createOrder={createOrder} onApprove={onApprove} onError={onPaypalError} />;
