@@ -5,6 +5,8 @@ export const paypalActionSlice = createSlice({
     value: {
       showPayPalButton: false,
       checkoutSuccess: false,
+      customId: "",
+      invoiceId: "",
     },
   },
   reducers: {

@@ -19,6 +19,7 @@ function Record() {
         }
       })
       .catch((e) => toast.error(e.response.data));
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -30,7 +31,7 @@ function Record() {
             <th>Order ID</th>
             <th>Product</th>
             <th>Total</th>
-            <th>Order status</th>
+            <th>Status</th>
             <th>Time</th>
           </tr>
         </thead>
@@ -43,7 +44,7 @@ function Record() {
                   <td>{record.records.id}</td>
                   <td>
                     {record.products.map((product) => (
-                      <p>
+                      <p key={`UserProductRecord-${index + 1}`}>
                         {product.name} x {product.quantity}
                       </p>
                     ))}

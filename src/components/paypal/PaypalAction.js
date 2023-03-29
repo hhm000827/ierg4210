@@ -17,6 +17,9 @@ const PaypalButtonWrapper = () => {
     let totalPrice = math.sumBy(shoppingCart, "subtotal");
     let currency = "USD";
     const response = await Axios.post(`/api/createCustomId`, { shoppingCart: JSON.stringify(shoppingCart), totalPrice: totalPrice, currency: currency });
+    const invoice = uuidv4();
+    dispatch(changeAction({ customId: response.data.digest, invoiceId: invoice }));
+
     return actions.order
       .create({
         purchase_units: [
@@ -27,7 +30,7 @@ const PaypalButtonWrapper = () => {
             },
           },
         ],
-        invoice_id: uuidv4(),
+        invoice_id: invoice,
         custom_id: response.data.digest,
         items: shoppingCart.map((item) => {
           return { name: item.name, quantity: item.quantity.toString(), unit_amount: { value: item.price } };
@@ -38,14 +41,15 @@ const PaypalButtonWrapper = () => {
 
   const onApprove = (data, actions) => {
     return actions.order.capture().then(function (details) {
-      Axios.post(`/api/storeRecord`, { shoppingCart: JSON.stringify(shoppingCart), record: JSON.stringify(details) })
+      console.log(paypalAction.customId);
+      Axios.post(`/api/storeRecord`, { shoppingCart: JSON.stringify(shoppingCart), record: JSON.stringify(details), customId: paypalAction.customId, invoiceId: paypalAction.invoiceId })
         .then((res) => dispatch(changeAction({ checkoutSuccess: true })))
         .catch((err) => err.response.data);
     });
   };
 
   const onPaypalError = (data, actions) => {
-    dispatch(changeAction({ checkoutSuccess: false, showPayPalButton: false }));
+    dispatch(changeAction({ checkoutSuccess: false, showPayPalButton: false, customId: "", invoiceId: "" }));
     toast.error("An Error occurred with your payment");
   };
 
@@ -54,7 +58,7 @@ const PaypalButtonWrapper = () => {
       if (paypalAction.checkoutSuccess) {
         dispatch(clearCart());
         toast.success("Order successful. Please check in Record Page", { className: "text-sm" });
-        dispatch(changeAction({ checkoutSuccess: false, showPayPalButton: false }));
+        dispatch(changeAction({ checkoutSuccess: false, showPayPalButton: false, customId: "", invoiceId: "" }));
       }
     }, // eslint-disable-next-line
     [paypalAction.checkoutSuccess]
