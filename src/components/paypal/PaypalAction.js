@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { Axios } from "../axios/Axios";
 import { clearCart } from "../shoppingCart/ShoppingCartSlice";
-import { changeAction } from "./PaypalActionSlice";
+import { changeAction, resetPaypalAction } from "./PaypalActionSlice";
 
 const PaypalButtonWrapper = () => {
   const shoppingCart = useSelector((state) => state.shoppingCart.value);
@@ -20,45 +20,40 @@ const PaypalButtonWrapper = () => {
     const invoice = uuidv4();
     dispatch(changeAction({ customId: response.data.digest, invoiceId: invoice }));
 
-    return actions.order
-      .create({
-        purchase_units: [
-          {
-            amount: {
-              currency_code: currency,
-              value: totalPrice.toString(),
-            },
+    return actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+            currency_code: currency,
+            value: totalPrice.toString(),
           },
-        ],
-        invoice_id: invoice,
-        custom_id: response.data.digest,
-        items: shoppingCart.map((item) => {
-          return { name: item.name, quantity: item.quantity.toString(), unit_amount: { value: item.price } };
-        }),
-      })
-      .then((orderID) => orderID);
-  };
-
-  const onApprove = (data, actions) => {
-    return actions.order.capture().then(function (details) {
-      console.log(paypalAction.customId);
-      Axios.post(`/api/storeRecord`, { shoppingCart: JSON.stringify(shoppingCart), record: JSON.stringify(details), customId: paypalAction.customId, invoiceId: paypalAction.invoiceId })
-        .then((res) => dispatch(changeAction({ checkoutSuccess: true })))
-        .catch((err) => err.response.data);
+        },
+      ],
+      invoice_id: invoice,
+      custom_id: response.data.digest,
+      items: shoppingCart.map((item) => {
+        return { name: item.name, quantity: item.quantity.toString(), unit_amount: { value: item.price } };
+      }),
     });
   };
 
+  const onApprove = (data, actions) => actions.order.capture().then((details) => dispatch(changeAction({ checkoutSuccess: true, record: JSON.stringify(details) })));
+
   const onPaypalError = (data, actions) => {
-    dispatch(changeAction({ checkoutSuccess: false, showPayPalButton: false, customId: "", invoiceId: "" }));
+    dispatch(resetPaypalAction());
     toast.error("An Error occurred with your payment");
   };
 
   useEffect(
     () => {
       if (paypalAction.checkoutSuccess) {
-        dispatch(clearCart());
-        toast.success("Order successful. Please check in Record Page", { className: "text-sm" });
-        dispatch(changeAction({ checkoutSuccess: false, showPayPalButton: false, customId: "", invoiceId: "" }));
+        Axios.post(`/api/storeRecord`, { shoppingCart: JSON.stringify(shoppingCart), record: paypalAction.record, customId: paypalAction.customId, invoiceId: paypalAction.invoiceId })
+          .then((res) => {
+            dispatch(clearCart());
+            toast.success("Order successful. Please check in Record Page", { className: "text-sm" });
+            dispatch(resetPaypalAction());
+          })
+          .catch((err) => err.response.data);
       }
     }, // eslint-disable-next-line
     [paypalAction.checkoutSuccess]

@@ -23,49 +23,51 @@ function AdminRecord() {
   }, []);
 
   return (
-    <div className="overflow-auto">
-      <table className="table w-fit text-xs">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Order ID</th>
-            <th>Custom ID</th>
-            <th>Invoice ID</th>
-            <th>Buyer</th>
-            <th>Product</th>
-            <th>Total</th>
-            <th>status</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          {records &&
-            records.map((record, index) => {
-              return (
-                <tr key={`AdminOrderRecord-${index + 1}`} className="hover">
-                  <td>{index + 1}</td>
-                  <td>{record.records.id}</td>
-                  <td>{record.customId}</td>
-                  <td>{record.invoiceId}</td>
-                  <td>{record.email}</td>
-                  <td>
-                    {record.products.map((product, index) => (
-                      <p key={`productRecord-${index}`}>
-                        {product.name} x {product.quantity}
-                      </p>
-                    ))}
-                  </td>
-                  <td>
-                    {record.records.payments.captures[0].amount.value} {record.records.payments.captures[0].amount.currency_code}
-                  </td>
-                  <td>{record.records.status}</td>
-                  <td>{record.records.payments.captures[0].update_time}</td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </table>
-    </div>
+    <table className="table w-full text-xs">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Order ID</th>
+          <th>Custom ID</th>
+          <th>Invoice ID</th>
+          <th>Buyer</th>
+          <th>Product</th>
+          <th>Total</th>
+          <th>status</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {records &&
+          records.map((record, index) => {
+            return (
+              <tr key={`AdminOrderRecord-${index + 1}`} className="hover">
+                <td>{index + 1}</td>
+                <td>{record.records.id}</td>
+                <td>
+                  <p className="overflow-auto w-60">{record.customId}</p>
+                </td>
+                <td>
+                  <p className="overflow-auto w-60">{record.invoiceId}</p>
+                </td>
+                <td>{record.email}</td>
+                <td>
+                  {record.products.map((product, index) => (
+                    <p key={`productRecord-${index}`}>
+                      {product.name} x {product.quantity}
+                    </p>
+                  ))}
+                </td>
+                <td>
+                  {record.records.payments.captures[0].amount.value} {record.records.payments.captures[0].amount.currency_code}
+                </td>
+                <td>{record.records.status}</td>
+                <td>{record.records.payments.captures[0].update_time}</td>
+              </tr>
+            );
+          })}
+      </tbody>
+    </table>
   );
 }
 
