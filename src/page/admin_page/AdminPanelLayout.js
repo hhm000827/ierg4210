@@ -27,7 +27,7 @@ const AdminPanelLayout = () => {
         <Navbar />
         <div className="flex flex-row gap-4">
           <Menu />
-          <div className="w-full flex justify-center my-5">
+          <div className="flex w-full justify-center my-5 overflow-auto">
             <Outlet />
           </div>
         </div>
