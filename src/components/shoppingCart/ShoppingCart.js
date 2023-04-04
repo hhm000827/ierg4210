@@ -34,9 +34,10 @@ const Table = (props) => {
     };
 
     dispatch(changeQuantity(payload));
+    dispatch(changeAction({ showPayPalButton: false }));
   };
 
-  const onClickCheckoutButton = () => (isLogin ? dispatch(changeAction({ showPayPalButton: true })) : toast.error("You need to login before checkout"));
+  const onClickCheckoutButton = () => (isLogin && isLogin.isLogin ? dispatch(changeAction({ showPayPalButton: true })) : toast.error("You need to login before checkout"));
 
   return !lang.isEmpty(shoppingCart) ? (
     <div className="flex flex-col">

@@ -44,6 +44,8 @@ const PaypalButtonWrapper = () => {
     toast.error("An Error occurred with your payment");
   };
 
+  const onCancel = (data, actions) => dispatch(resetPaypalAction());
+
   useEffect(
     () => {
       if (paypalAction.checkoutSuccess) {
@@ -59,7 +61,7 @@ const PaypalButtonWrapper = () => {
     [paypalAction.checkoutSuccess]
   );
 
-  return <PayPalButtons style={{ layout: "horizontal" }} createOrder={createOrder} onApprove={onApprove} onError={onPaypalError} />;
+  return <PayPalButtons style={{ layout: "horizontal" }} createOrder={createOrder} onApprove={onApprove} onError={onPaypalError} onCancel={onCancel} />;
 };
 
 export default PaypalButtonWrapper;
