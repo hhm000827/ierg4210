@@ -11,6 +11,24 @@
 | Payment Method            | PayPal                                                           |
 | Other security Prevention | listed in ierg4210_server README.md                              |
 
+## Website Interface
+
+| Page / Component               | Interface                                                                     |
+| ------------------------------ | ----------------------------------------------------------------------------- |
+| Home Page                      | ![Alt text](readme_img/home.png)                                              |
+| Filter by Category             | ![Alt text](readme_img/category.png)                                          |
+| Product Page                   | ![Alt text](readme_img/product.png)                                           |
+| Login Form                     | ![Alt text](readme_img/login.png)                                             |
+| Change Password Form           | ![Alt text](readme_img/change_pw.png)                                         |
+| Admin Page `(Admin)`           | ![Alt text](readme_img/admin_panel.png)                                       |
+| Create Product Page `(Admin)`  | ![Alt text](readme_img/create_product.png)                                    |
+| Check Product Page `(Admin)`   | ![Alt text](readme_img/check_product.png)                                     |
+| Create Category Page `(Admin)` | ![Alt text](readme_img/create_category.png)                                   |
+| Check Category Page `(Admin)`  | ![Alt text](readme_img/check_category.png)                                    |
+| Check Order Page `(Admin)`     | ![Alt text](readme_img/check_order.png)                                       |
+| Record Page                    | ![Alt text](readme_img/self_record.png)                                       |
+| Shopping Cart                  | ![Alt text](readme_img/shopping_1.png) ![Alt text](readme_img/shopping_2.png) |
+
 ## Environment Management
 
 In order to use different API for different environment(development, production), I have set up 2 .env file (under root directory directly):
